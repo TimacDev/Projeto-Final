@@ -61,7 +61,7 @@ export default function History({ goTab }) {
             <div className="history-stat-label">Coffee-growing countries</div>
           </div>
           <div>
-            <div className="history-stat-num">5 years</div>
+            <div className="history-stat-num">~5 years</div>
             <div className="history-stat-label">From seed to your cup</div>
           </div>
         </div>
