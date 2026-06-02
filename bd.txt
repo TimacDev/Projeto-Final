@@ -26,7 +26,7 @@ CREATE TABLE user (
 CREATE TABLE brew_logs (
   id PRIMARY KEY AUTOINCREMENT,
   user_id NOT NULL REFERENCES users(id),
-  coffee_id REFERENCES coffees(id),
+  coffee_id NOT NULL REFERENCES coffees(id),
   brewed_at timestamptz DEFAULT now(),
   method text,
   dose_g numeric,
