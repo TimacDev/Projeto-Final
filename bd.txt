@@ -1,7 +1,7 @@
 CREATE TABLE coffees (
   id PRIMARY KEY AUTOINCREMENT,
   name text NOT NULL,
-  roaster text,
+  roaster text NOT NULL,
   country text NOT NULL,
   region text,
   producer text,
@@ -10,6 +10,16 @@ CREATE TABLE coffees (
   roast_level smallint,
   roast_date date,
   roaster_notes text[],
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE user (
+  id PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR (100),
+  email VARCHAR(200) UNIQUE,
+  password VARCHAR(200),
+  coffee_id REFERENCES coffees(id),
+  status text DEFAULT 'suggested',
   created_at timestamptz DEFAULT now()
 );
 
@@ -33,12 +43,4 @@ CREATE TABLE flavor_tags (
   name      text UNIQUE NOT NULL,
   category  text NOT NULL,
   parent_id int REFERENCES flavor_tags(id)
-);
-
-CREATE TABLE user (
-  id PRIMARY KEY AUTOINCREMENT,
-  name VARCHAR (100)
-  coffee_id REFERENCES coffees(id),
-  status text DEFAULT 'suggested',
-  created_at timestamptz DEFAULT now()
 );
