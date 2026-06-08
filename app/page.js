@@ -10,6 +10,7 @@ import HardwareGuide from '../components/HardwareGuide';
 import RoastGuide from '../components/RoastGuide';
 import TasteQuiz from '../components/TasteQuiz';
 import MyLog from '../components/MyLog';
+import ChatBot from '../components/ChatBot';
 
 // Top nav structure — three themed groups + the personal tools group on the right.
 const GUIDE_GROUPS = [
@@ -43,6 +44,7 @@ export default function App() {
   }
 
   return (
+    <>
     <div className="stage">
       <div className={`stage-track${landingUp ? ' move-up' : ''}`}>
         <div className="panel landing">
@@ -84,5 +86,7 @@ export default function App() {
         </div>
       </div>
     </div>
+    <ChatBot />
+    </>
   );
 }
