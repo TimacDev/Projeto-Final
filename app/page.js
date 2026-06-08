@@ -85,8 +85,8 @@ export default function App() {
           <main className="main">{renderActive()}</main>
         </div>
       </div>
-    </div>
-    <ChatBot />
+    </div> 
+    <ChatBot visible={landingUp} />
     </>
   );
 }

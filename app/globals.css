@@ -572,6 +572,18 @@ html, body { overflow: hidden; height: 100vh; margin: 0; }
 .empty-state { text-align: center; padding: 40px; color: #9c845f; font-size: 18px; }
 
 /* ── ChatBot (floating widget, top of UI) ── */
+/* Hidden state — stays mounted (preserves messages/input), but invisible and
+   non-interactive. Both bubble and panel pick up these styles via the class. */
+.chatbot-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px) scale(0.95);
+}
+.chatbot-bubble,
+.chatbot-panel {
+  transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.15s, background 0.15s;
+}
+
 .chatbot-bubble {
   position: fixed;
   bottom: 24px;
