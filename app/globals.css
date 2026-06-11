@@ -607,6 +607,46 @@ html, body { overflow: hidden; height: 100vh; margin: 0; }
   transform: translateY(-2px) scale(1.05);
 }
 
+/* Teaser speech bubble that nudges the user to open the chat (sits above the icon). */
+.chatbot-teaser {
+  position: fixed;
+  right: 36px;
+  bottom: 124px;
+  max-width: calc(100vw - 72px);
+  padding: 10px 14px;
+  background: #faf8f3;
+  color: #1a1208;
+  border: 2px solid #1a1208;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #1a1208;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  white-space: nowrap;
+  cursor: pointer;
+  z-index: 1000;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+/* Tail: a small rotated square poking out the bottom, showing two borders as the point. */
+.chatbot-teaser::after {
+  content: "";
+  position: absolute;
+  right: 32px;
+  bottom: -7px;
+  width: 12px;
+  height: 12px;
+  background: #faf8f3;
+  border-right: 2px solid #1a1208;
+  border-bottom: 2px solid #1a1208;
+  transform: rotate(45deg);
+}
+/* Resting/hidden state — same idea as .chatbot-hidden, lets it animate in and out. */
+.chatbot-teaser-off {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px) scale(0.95);
+}
+
 .chatbot-panel {
   position: fixed;
   bottom: 24px;
