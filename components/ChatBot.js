@@ -12,6 +12,7 @@ export default function ChatBot({ visible = true }) {
   ]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [showTeaser, setShowTeaser] = useState(false);
   const scrollRef = useRef(null);
 
   // Auto-scroll to the latest message whenever the list grows or the panel opens.
@@ -20,6 +21,21 @@ export default function ChatBot({ visible = true }) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, sending, open]);
+
+  // Teaser speech bubble: once the widget becomes visible (user past the landing),
+  // pop it in after ~2.5s, then auto-hide ~6s later. Runs only once. We toggle a
+  // class (rather than unmount) so CSS can animate it in and out.
+  const teasedRef = useRef(false);
+  useEffect(() => {
+    if (!visible || teasedRef.current) return;
+    teasedRef.current = true;
+    const showTimer = setTimeout(() => setShowTeaser(true), 2500);
+    const hideTimer = setTimeout(() => setShowTeaser(false), 8500);
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [visible]);
 
   async function send(e) {
     e.preventDefault();
@@ -58,21 +74,30 @@ export default function ChatBot({ visible = true }) {
 
   if (!open) {
     return (
-      <button
-        className={`chatbot-bubble${hiddenClass}`}
-        onClick={() => setOpen(true)}
-        aria-label="Open chat"
-        aria-hidden={!visible}
-        tabIndex={tabIndex}
-      >
-        <img
-          src="/MrBeanie.svg"
-          alt=""
-          width={28}
-          height={28}
+      <>
+        <div
+          className={`chatbot-teaser${showTeaser ? "" : " chatbot-teaser-off"}${hiddenClass}`}
+          onClick={() => setOpen(true)}
           aria-hidden="true"
-        />
-      </button>
+        >
+          {"Hi, I'm Mr. Beanie!"}
+        </div>
+        <button
+          className={`chatbot-bubble${hiddenClass}`}
+          onClick={() => setOpen(true)}
+          aria-label="Open chat"
+          aria-hidden={!visible}
+          tabIndex={tabIndex}
+        >
+          <img
+            src="/MrBeanie.svg"
+            alt=""
+            width={28}
+            height={28}
+            aria-hidden="true"
+          />
+        </button>
+      </>
     );
   }
 
