@@ -1,46 +1,45 @@
 CREATE TABLE coffees (
-  id PRIMARY KEY AUTOINCREMENT,
-  name text NOT NULL,
-  roaster text NOT NULL,
-  country text NOT NULL,
-  region text,
-  producer text,
-  variety text[],
-  process text NOT NULL,
-  roast_level smallint,
-  roast_date date,
-  roaster_notes text[],
-  created_at timestamptz DEFAULT now()
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  coffee_name VARCHAR(200) NOT NULL,
+  roaster VARCHAR(200) NOT NULL,
+  country VARCHAR(200) NOT NULL,
+  region VARCHAR(200) NOT NULL,
+  producer VARCHAR(200) NOT NULL,
+  variety VARCHAR(200) NOT NULL,
+  coffee_process  ENUM('washed','natural','honey','wet-hulled','anaerobic') DEFAULT ('washed'),
+  roast_level TINYINT,
+  roast_date DATE,
+  roaster_notes VARCHAR(200),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE user (
-  id PRIMARY KEY AUTOINCREMENT,
-  name VARCHAR (100),
+
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_name VARCHAR (100),
   email VARCHAR(200) UNIQUE,
-  password VARCHAR(200),
-  coffee_id REFERENCES coffees(id),
-  status text DEFAULT 'suggested',
-  created_at timestamptz DEFAULT now()
+  user_password VARCHAR(50),
+  coffee_id INT REFERENCES coffees(id),
+  user_status VARCHAR(200) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE brew_logs (
-  id PRIMARY KEY AUTOINCREMENT,
-  user_id NOT NULL REFERENCES users(id),
-  coffee_id NOT NULL REFERENCES coffees(id),
-  brewed_at timestamptz DEFAULT now(),
-  method text,
-  dose_g numeric,
-  water_g numeric,
-  grind_setting text,
-  water_temp_c smallint,
-  brew_time_sec smallint,
-  notes text,
-  created_at timestamptz DEFAULT now()
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL REFERENCES users(id),
+  coffee_id INT NOT NULL REFERENCES coffees(id),
+  brewed_at DATE,
+  method VARCHAR(200) NOT NULL,
+  dose_g TINYINT,
+  water_g TINYINT,
+  grind_setting VARCHAR(200) NOT NULL,
+  water_temp_c TINYINT,
+  brew_time_sec TINYINT,
+  notes VARCHAR(200) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE flavor_tags (
-  id PRIMARY KEY AUTOINCREMENT,
-  name      text UNIQUE NOT NULL,
-  category  text NOT NULL,
-  parent_id int REFERENCES flavor_tags(id)
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  flavor_name VARCHAR(50) UNIQUE NOT NULL
 );
