@@ -1,15 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { BREW_METHODS } from '../data/brewMethods';
 
 export default function MyLog() {
   const [entries, setEntries] = useState([]);
-  const [form, setForm] = useState({ name:'', method:'', roast:'', notes:'' });
+  const [coffees, setCoffees] = useState([]);
+  const [form, setForm] = useState({ coffee_id:'', method:'', roast:'', notes:'' });
+
+  useEffect(() => {
+    fetch('/api/coffees')
+    .then(r => r.json())
+    .then(data => setCoffees(data))
+    .catch(() => {});
+}, []);
 
   function addEntry(e) {
     e.preventDefault();
-    if (!form.name.trim()) return;
-    setEntries(prev => [{ ...form, id: Date.now(), date: new Date().toLocaleDateString() }, ...prev]);
-    setForm({ name:'', method:'', roast:'', notes:'' });
+    if (!form.coffee_id) return;
+    const coffee = coffees.find(c => c.id === Number(form.coffee_id));
+    setEntries(prev => [{ ...form, id: Date.now(), date: new Date().toLocaleDateString(), name: coffee?.name ?? '' }, ...prev]);
+    setForm({ coffee_id:'', method:'', roast:'', notes:'' });
+
   }
 
   return (
@@ -20,9 +30,12 @@ export default function MyLog() {
         <form className="sk-box log-form" onSubmit={addEntry} style={{padding:20}}>
           <div style={{fontFamily:'var(--font-display)',fontStyle:'italic',fontSize:22,marginBottom:4,letterSpacing:'-0.01em'}}>Log a cup</div>
           <div>
-            <div className="log-field-label">Coffee name *</div>
-            <input className="log-input" placeholder="e.g. Ethiopian Yirgacheffe" value={form.name}
-              onChange={e => setForm(f => ({...f, name:e.target.value}))} />
+            <div className="log-field-label">Coffee name</div>
+              <select className="log-input" value={form.coffee_id}
+              onChange={e => setForm(f => ({...f, coffee_id: e.target.value}))}>
+              <option value="">— select a coffee —</option>
+              {coffees.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </select>
           </div>
           <div>
             <div className="log-field-label">Brew method</div>
