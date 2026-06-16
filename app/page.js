@@ -20,7 +20,7 @@ const GUIDE_GROUPS = [
 ];
 const PERSONAL_TABS = [
   { id:'quiz', label:'Taste Quiz', icon:'✦' },
-  { id:'log',  label:'My Log',     icon:'❒' },
+  { id:'journal',  label:'My Coffee Journal',     icon:'❒' },
 ];
 
 export default function App() {
@@ -38,7 +38,7 @@ export default function App() {
       case 'hardware':   return <HardwareGuide/>;
       case 'roast':      return <RoastGuide/>;
       case 'quiz':       return <TasteQuiz/>;
-      case 'log':        return <MyCoffeeJournal/>;
+      case 'journal':        return <MyCoffeeJournal/>;
       default:           return null;
     }
   }

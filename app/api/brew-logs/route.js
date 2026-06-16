@@ -1,5 +1,16 @@
 import db from '../../../lib/db';
 
+export async function GET() {
+  const [rows] = await db.query(
+    `SELECT bl.id, bl.brewed_at, bl.method, bl.dose_g, bl.water_temp_c, bl.notes,
+            c.coffee_name AS name
+     FROM brew_logs bl
+     JOIN coffees c ON c.id = bl.coffee_id
+     ORDER BY bl.brewed_at DESC, bl.id DESC`
+  );
+  return Response.json(rows);
+}
+
 export async function POST(request) {
   const body = await request.json();
 

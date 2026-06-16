@@ -15,6 +15,14 @@ export default function MyCoffeeJournal() {
     .then(data => setCoffees(data))
     .catch(() => {});
 
+    fetch('/api/brew-logs')
+    .then(r => r.json())
+    .then(data => setEntries(data.map(e => ({
+      ...e,
+      date: e.brewed_at ? new Date(e.brewed_at).toLocaleDateString() : '—',
+    }))))
+    .catch(() => {});
+
     fetch('/api/brew-logs/options')
     .then(r => r.json())
     .then(data => {
@@ -37,7 +45,7 @@ export default function MyCoffeeJournal() {
     if (!res.ok) return;
 
     const coffee = coffees.find(c => c.id === Number(form.coffee_id));
-    setEntries(prev => [{ ...form, id: Date.now(), date: new Date().toLocaleDateString(), name: coffee?.name ?? '' }, ...prev]);
+    setEntries(prev => [{ ...form, id: Date.now(), date: form.brewed_at ? new Date(form.brewed_at).toLocaleDateString() : '—', name: coffee?.name ?? '' }, ...prev]);
     setForm(EMPTY_FORM);
   }
 
@@ -104,13 +112,24 @@ export default function MyCoffeeJournal() {
 
           <div>
             <div className="log-field-label">Tasting notes</div>
-            <select className="log-input" multiple value={form.notes ? form.notes.split(',') : []}
-              onChange={e => {
-                const selected = Array.from(e.target.selectedOptions).map(o => o.value);
-                setForm(f => ({...f, notes: selected.join(',')}));
-              }}>
-              {noteOptions.map(n => <option key={n} value={n}>{n}</option>)}
-            </select>
+            <div style={{display:'flex', flexWrap:'wrap', gap:'8px 16px', marginTop:4}}>
+              {noteOptions.map(n => {
+                const checked = form.notes.split(',').filter(Boolean).includes(n);
+                return (
+                  <label key={n} style={{display:'flex', alignItems:'center', gap:6, cursor:'pointer'}}>
+                    <input type="checkbox" value={n} checked={checked}
+                      onChange={e => {
+                        const current = form.notes.split(',').filter(Boolean);
+                        const updated = e.target.checked
+                          ? [...current, n]
+                          : current.filter(v => v !== n);
+                        setForm(f => ({...f, notes: updated.join(',')}));
+                      }} />
+                    {n}
+                  </label>
+                );
+              })}
+            </div>
           </div>
 
           <button className="btn primary" type="submit">Add entry ✓</button>
