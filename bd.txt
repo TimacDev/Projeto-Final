@@ -39,8 +39,3 @@ CREATE TABLE brew_logs (
   notes SET('roasted', 'spices', 'nutty/cocoa', 'sweet', 'floral', 'fruity', 'green/vegetative', 'sour/fermented', 'other') DEFAULT('other'),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE TABLE flavor_tags (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  flavor_name VARCHAR(50) UNIQUE NOT NULL
-);
