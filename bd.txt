@@ -39,3 +39,12 @@ CREATE TABLE brew_logs (
   notes SET('roasted', 'spices', 'nutty/cocoa', 'sweet', 'floral', 'fruity', 'green/vegetative', 'sour/fermented', 'other') DEFAULT('other'),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO users (user_name, email, user_password)
+VALUES ('Ana Lima', 'ana.lima@email.com', 'brew2024');
+
+INSERT INTO coffees (user_id, coffee_name, roaster, country, region, producer, variety, coffee_process, roast_level, roast_date, roaster_notes)
+VALUES (1, 'Cerrado Sunrise', 'Torra Viva', 'Brazil', 'Cerrado Mineiro', 'Fazenda São João', 'Yellow Bourbon', 'natural', 'medium', '2026-05-18', 'sweet, fruity, nutty');
+
+INSERT INTO brew_logs (user_id, coffee_id, brewed_at, method, dose_g, water_g, grind_setting, water_temp_c, brew_time_sec, notes)
+VALUES (1, 1, '2026-06-15', 'Pour-Over', 18, 300, 'medium-fine', 93, 210, 'fruity,sweet');
