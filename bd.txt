@@ -1,3 +1,6 @@
+create DATABASE coffee_db;
+use coffee_db;
+
 CREATE TABLE coffees (
   id INT PRIMARY KEY AUTO_INCREMENT,
   coffee_name VARCHAR(200) NOT NULL,
@@ -41,4 +44,3 @@ CREATE TABLE flavor_tags (
   id INT PRIMARY KEY AUTO_INCREMENT,
   flavor_name VARCHAR(50) UNIQUE NOT NULL
 );
-
