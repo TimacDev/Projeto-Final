@@ -30,7 +30,7 @@ CREATE TABLE brew_logs (
   user_id INT NOT NULL REFERENCES users(id),
   coffee_id INT NOT NULL REFERENCES coffees(id),
   brewed_at DATE,
-  method ENUM('pour-over', 'espresso', 'french-press', 'aeropress', 'coldbrew', 'other') DEFAULT ('other'),
+  method ENUM('Pour-Over', 'Espresso', 'French-Press', 'AeroPress', 'ColdBrew', 'Other') DEFAULT ('Other'),
   dose_g TINYINT,
   water_g TINYINT,
   grind_setting VARCHAR(200) NOT NULL,

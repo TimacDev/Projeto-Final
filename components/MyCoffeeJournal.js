@@ -1,17 +1,26 @@
 import { useState, useEffect} from 'react';
-import { BREW_METHODS } from '../data/brewMethods';
 
 const EMPTY_FORM = { coffee_id:'', brewed_at:'', method:'', dose_g:'', water_g:'', grind_setting:'', water_temp_c:'', brew_time_sec:'', notes:'' };
 
-export default function MyLog() {
+export default function MyCoffeeJournal() {
   const [entries, setEntries] = useState([]);
   const [coffees, setCoffees] = useState([]);
   const [form, setForm] = useState(EMPTY_FORM);
+  const [methods, setMethods] = useState([]);
+  const [noteOptions, setNoteOptions] = useState([]);
 
   useEffect(() => {
     fetch('/api/coffees')
     .then(r => r.json())
     .then(data => setCoffees(data))
+    .catch(() => {});
+
+    fetch('/api/brew-logs/options')
+    .then(r => r.json())
+    .then(data => {
+      setMethods(data.method ?? []);
+      setNoteOptions(data.notes ?? []);
+    })
     .catch(() => {});
   }, []);
 
@@ -41,7 +50,7 @@ export default function MyLog() {
           <div style={{fontFamily:'var(--font-display)',fontStyle:'italic',fontSize:22,marginBottom:4,letterSpacing:'-0.01em'}}>Log a cup</div>
 
           <div>
-            <div className="log-field-label">Coffee name *</div>
+            <div className="log-field-label">Coffee name</div>
             <select className="log-input" value={form.coffee_id}
               onChange={e => setForm(f => ({...f, coffee_id: e.target.value}))}>
               <option value="">— select a coffee —</option>
@@ -59,7 +68,7 @@ export default function MyLog() {
             <div className="log-field-label">Brew method</div>
             <select className="log-input" value={form.method} onChange={e => setForm(f => ({...f, method:e.target.value}))}>
               <option value="">— select —</option>
-              {BREW_METHODS.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
+              {methods.map(m => <option key={m} value={m}>{m}</option>)}
             </select>
           </div>
 
@@ -95,8 +104,13 @@ export default function MyLog() {
 
           <div>
             <div className="log-field-label">Tasting notes</div>
-            <input className="log-input" placeholder="e.g. fruity, bright, chocolatey" value={form.notes}
-              onChange={e => setForm(f => ({...f, notes:e.target.value}))} />
+            <select className="log-input" multiple value={form.notes ? form.notes.split(',') : []}
+              onChange={e => {
+                const selected = Array.from(e.target.selectedOptions).map(o => o.value);
+                setForm(f => ({...f, notes: selected.join(',')}));
+              }}>
+              {noteOptions.map(n => <option key={n} value={n}>{n}</option>)}
+            </select>
           </div>
 
           <button className="btn primary" type="submit">Add entry ✓</button>

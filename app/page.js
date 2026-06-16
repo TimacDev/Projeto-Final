@@ -9,8 +9,8 @@ import WaterGuide from '../components/WaterGuide';
 import HardwareGuide from '../components/HardwareGuide';
 import RoastGuide from '../components/RoastGuide';
 import TasteQuiz from '../components/TasteQuiz';
-import MyLog from '../components/MyLog';
 import ChatBot from '../components/ChatBot';
+import MyCoffeeJournal from '../components/MyCoffeeJournal';
 
 // Top nav structure — three themed groups + the personal tools group on the right.
 const GUIDE_GROUPS = [
@@ -38,7 +38,7 @@ export default function App() {
       case 'hardware':   return <HardwareGuide/>;
       case 'roast':      return <RoastGuide/>;
       case 'quiz':       return <TasteQuiz/>;
-      case 'log':        return <MyLog/>;
+      case 'log':        return <MyCoffeeJournal/>;
       default:           return null;
     }
   }
