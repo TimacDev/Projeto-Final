@@ -21,7 +21,7 @@ CREATE TABLE coffees (
   coffee_process  ENUM('washed','natural','honey','wet-hulled','anaerobic') DEFAULT ('washed'),
   roast_level ENUM('light', 'medium-light', 'medium', 'medium-dark', 'dark') DEFAULT ('medium'),
   roast_date DATE,
-  roaster_notes SET('roasted', 'spices', 'nutty/cocoa', 'sweet', 'floral', 'fruity', 'green/vegetative', 'sour/fermented'),
+  roaster_notes VARCHAR(200) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -30,13 +30,13 @@ CREATE TABLE brew_logs (
   user_id INT NOT NULL REFERENCES users(id),
   coffee_id INT NOT NULL REFERENCES coffees(id),
   brewed_at DATE,
-  method VARCHAR(200) NOT NULL,
+  method ENUM('pour-over', 'espresso', 'french-press', 'aeropress', 'coldbrew', 'other') DEFAULT ('other'),
   dose_g TINYINT,
   water_g TINYINT,
   grind_setting VARCHAR(200) NOT NULL,
   water_temp_c TINYINT,
   brew_time_sec TINYINT,
-  notes VARCHAR(200) NOT NULL,
+  notes SET('roasted', 'spices', 'nutty/cocoa', 'sweet', 'floral', 'fruity', 'green/vegetative', 'sour/fermented', 'other') DEFAULT('other'),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
