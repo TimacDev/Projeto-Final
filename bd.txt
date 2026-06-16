@@ -7,9 +7,9 @@ CREATE TABLE coffees (
   producer VARCHAR(200) NOT NULL,
   variety VARCHAR(200) NOT NULL,
   coffee_process  ENUM('washed','natural','honey','wet-hulled','anaerobic') DEFAULT ('washed'),
-  roast_level TINYINT,
+  roast_level ENUM('light', 'medium-light', 'medium', 'medium-dark', 'dark') DEFAULT ('medium'),
   roast_date DATE,
-  roaster_notes VARCHAR(200),
+  roaster_notes SET('roasted', 'spices', 'nutty/cocoa', 'sweet', 'floral', 'fruity', 'green/vegetative', 'sour/fermented'),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -19,8 +19,6 @@ CREATE TABLE users (
   user_name VARCHAR (100),
   email VARCHAR(200) UNIQUE,
   user_password VARCHAR(50),
-  coffee_id INT REFERENCES coffees(id),
-  user_status VARCHAR(200) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -43,3 +41,4 @@ CREATE TABLE flavor_tags (
   id INT PRIMARY KEY AUTO_INCREMENT,
   flavor_name VARCHAR(50) UNIQUE NOT NULL
 );
+
