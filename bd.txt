@@ -1,8 +1,17 @@
 create DATABASE coffee_db;
 use coffee_db;
 
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_name VARCHAR (100),
+  email VARCHAR(200) UNIQUE,
+  user_password VARCHAR(50),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE coffees (
   id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL REFERENCES users(id),
   coffee_name VARCHAR(200) NOT NULL,
   roaster VARCHAR(200) NOT NULL,
   country VARCHAR(200) NOT NULL,
@@ -13,15 +22,6 @@ CREATE TABLE coffees (
   roast_level ENUM('light', 'medium-light', 'medium', 'medium-dark', 'dark') DEFAULT ('medium'),
   roast_date DATE,
   roaster_notes SET('roasted', 'spices', 'nutty/cocoa', 'sweet', 'floral', 'fruity', 'green/vegetative', 'sour/fermented'),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-
-CREATE TABLE users (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  user_name VARCHAR (100),
-  email VARCHAR(200) UNIQUE,
-  user_password VARCHAR(50),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
