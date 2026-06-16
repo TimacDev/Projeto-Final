@@ -47,7 +47,7 @@ export default function History({ goTab }) {
     <div>
       <div className="history-hero">
         <div className="history-eyebrow">Chapter 01 · Understanding</div>
-        <h1 className="history-hero-title">A bean,<br/>a thousand years.</h1>
+        <h1 className="history-hero-title">One bean,<br/>a thousand years.</h1>
         <p className="history-hero-lead">
           Coffee has traveled further than almost any plant in human history — from a wild shrub in Ethiopian forests to a daily ritual on every continent. The story of how it got there is a story of monks, smugglers, revolutionaries, and roasters. And it begins, depending on who you ask, with a goatherd.
         </p>
