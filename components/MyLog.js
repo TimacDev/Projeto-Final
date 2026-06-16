@@ -51,7 +51,7 @@ export default function MyLog() {
 
           <div>
             <div className="log-field-label">Brewed at</div>
-            <input className="log-input" type="datetime-local" step="60" value={form.brewed_at}
+            <input className="log-input" type="date" value={form.brewed_at}
               onChange={e => setForm(f => ({...f, brewed_at: e.target.value}))} />
           </div>
 
