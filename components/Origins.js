@@ -109,7 +109,7 @@ export default function Origins() {
           <div className="belt-key-row"><span className="belt-dot asia"></span> Asia-Pacific <span style={{color:'#9c845f'}}>· {counts.asia}</span></div>
         </div>
         <div style={{flex:1,minWidth:0,fontSize:13,color:'#7a6245',fontStyle:'italic',fontFamily:'var(--font-display)'}}>
-          Coffee grows in a narrow band 25° north to 25° south of the equator — the "Bean Belt."
+          Fun fact : Coffee grows in a narrow band 25° north to 25° south of the equator — the "Bean Belt."
         </div>
       </div>
 
