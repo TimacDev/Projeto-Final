@@ -81,13 +81,13 @@ export default function MyCoffeeJournal() {
           </div>
 
           <div>
-            <div className="log-field-label">Coffee dose (g)</div>
+            <div className="log-field-label">Coffee dosage (g)</div>
             <input className="log-input" type="number" placeholder="e.g. 18" value={form.dose_g}
               onChange={e => setForm(f => ({...f, dose_g: e.target.value}))} />
           </div>
 
           <div>
-            <div className="log-field-label">Water (g)</div>
+            <div className="log-field-label">Water dosage (g)</div>
             <input className="log-input" type="number" placeholder="e.g. 300" value={form.water_g}
               onChange={e => setForm(f => ({...f, water_g: e.target.value}))} />
           </div>

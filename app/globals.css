@@ -561,7 +561,7 @@ html, body { overflow: hidden; height: 100vh; margin: 0; }
 .log-form { display: flex; flex-direction: column; gap: 12px; }
 .log-field-label { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 .log-input {
-  width: 100%; border: 2px solid #1a1208; border-radius: 8px;
+  width: 100%; border: 1px solid #1a1208; border-radius: 8px;
   padding: 8px 12px; font-family: var(--font-body); font-size: 14px;
   background: #faf8f3; color: #1a1208;
 }
