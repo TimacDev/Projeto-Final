@@ -32,10 +32,10 @@ CREATE TABLE brew_logs (
   brewed_at DATE,
   method ENUM('Pour-Over', 'Espresso', 'French-Press', 'AeroPress', 'ColdBrew', 'Other') DEFAULT ('Other'),
   dose_g TINYINT,
-  water_g TINYINT,
+  water_g SMALLINT,
   grind_setting VARCHAR(200) NOT NULL,
   water_temp_c TINYINT,
-  brew_time_sec TINYINT,
+  brew_time_sec SMALLINT,
   notes SET('roasted', 'spices', 'nutty/cocoa', 'sweet', 'floral', 'fruity', 'green/vegetative', 'sour/fermented', 'other') DEFAULT('other'),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
