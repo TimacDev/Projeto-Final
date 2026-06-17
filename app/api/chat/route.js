@@ -10,5 +10,5 @@ export async function POST(request) {
   // Small delay so the UI feels like a real network call, not an instant reply.
   await new Promise(r => setTimeout(r, 400));
 
-  return Response.json({ reply: findReply(message) });
+  return Response.json({ reply: 'I\'m in a growning phase 🌱 \n , try again later! ❤️' });
 }
