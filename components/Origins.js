@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import TasteDots from './TasteDots';
 
 const ORIGINS = [
@@ -142,7 +143,7 @@ export default function Origins() {
         )}
       </div>
 
-      {selected && (
+      {selected && createPortal(
         <div className="overlay-bg" onClick={() => setSelected(null)}>
           <div className="overlay-card" onClick={e => e.stopPropagation()}>
             <button className="overlay-close" onClick={() => setSelected(null)}>✕ close</button>
@@ -193,7 +194,8 @@ export default function Origins() {
               {selected.fact}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
