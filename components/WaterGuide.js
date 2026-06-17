@@ -8,12 +8,12 @@ const WATER_MINERALS = [
 ];
 
 const WATER_SOURCES = [
-  { name:'Distilled / RO',     score:1, note:'Strips all minerals. Under-extracts badly — flat, sour, paper-like.' },
+  { name:'Distilled / Pure Reverse Osmosis',     score:1, note:'Strips all minerals. Under-extracts badly — flat, sour, paper-like.' },
   { name:'Soft tap water',     score:2, note:'Often passable, but chlorine and inconsistent minerals dull flavor.' },
   { name:'Hard tap water',     score:1, note:'Scales equipment and bullies the acidity. Will ruin a good bean.' },
   { name:'Filter pitcher',     score:3, note:'Removes chlorine, keeps useful minerals. The realistic upgrade.' },
   { name:'Bottled spring',     score:4, note:'Look for ~150 ppm TDS. Volvic and similar are café favorites.' },
-  { name:'Remineralized RO',   score:5, note:'Distilled + measured mineral packets. Repeatable, ideal — and a hassle.' },
+  { name:'Remineralized Reverse Osmosis',   score:5, note:'Distilled + measured mineral packets. Repeatable, ideal — and a hassle.' },
 ];
 
 export default function WaterGuide() {
@@ -49,6 +49,13 @@ export default function WaterGuide() {
         </div>
       </div>
 
+      <div className="sk-box accent" style={{padding:'16px 20px', marginBottom:28}}>
+        <div className="label" style={{color:'#5a4632',marginBottom:4}}>Important rule of thumb</div>
+        <div style={{fontFamily:'var(--font-display)',fontStyle:'italic',fontSize:22,lineHeight:1.25,letterSpacing:'-0.01em'}}>
+          If your water doesn't taste good on its own, it won't make coffee that does.
+        </div>
+      </div>
+
       <div className="label">The three minerals that matter</div>
       <div className="divider" style={{marginTop:4}}></div>
       <div className="mineral-grid">
@@ -64,7 +71,7 @@ export default function WaterGuide() {
 
       <div className="label">What to brew with</div>
       <div className="divider" style={{marginTop:4}}></div>
-      <div style={{marginBottom:24}}>
+      <div>
         {WATER_SOURCES.map(s =>
           <div key={s.name} className={`source-row${s.score>=4 ? ' best' : ''}`}>
             <div className="src-name">{s.name}</div>
@@ -74,13 +81,6 @@ export default function WaterGuide() {
             <div className="src-note">{s.note}</div>
           </div>
         )}
-      </div>
-
-      <div className="sk-box accent" style={{padding:'16px 20px'}}>
-        <div className="label" style={{color:'#5a4632',marginBottom:2}}>Rule of thumb</div>
-        <div style={{fontFamily:'var(--font-display)',fontStyle:'italic',fontSize:22,lineHeight:1.25,letterSpacing:'-0.01em'}}>
-          If your tap water doesn't taste good on its own, it won't make coffee that does.
-        </div>
       </div>
     </div>
   );
