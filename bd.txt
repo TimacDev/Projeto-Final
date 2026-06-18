@@ -1,11 +1,15 @@
 create DATABASE coffee_db;
 use coffee_db;
 
+-- Migration for an EXISTING database (run once if you already created `users`):
+--   ALTER TABLE users MODIFY user_password VARCHAR(255) NOT NULL;
+-- user_password now stores a bcrypt hash (~60 chars), never a plaintext password.
+
 CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   user_name VARCHAR (100),
   email VARCHAR(200) UNIQUE,
-  user_password VARCHAR(50),
+  user_password VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -40,6 +44,10 @@ CREATE TABLE brew_logs (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- NOTE: this seed stores a PLAINTEXT password, so this account cannot log in
+-- through the app (login compares against a bcrypt hash). Sign up a fresh
+-- account via the UI instead. The row is kept so the seeded coffee/brew_log
+-- below (which reference user_id = 1) still have a valid owner.
 INSERT INTO users (user_name, email, user_password)
 VALUES ('Ana Lima', 'ana.lima@email.com', 'brew2024');
 

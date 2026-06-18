@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Auth from '../components/Auth';
 import History from '../components/History';
 import Origins from '../components/Origins';
 import ProcessingGuide from '../components/ProcessingGuide';
@@ -26,6 +27,24 @@ const PERSONAL_TABS = [
 export default function App() {
   const [landingUp, setLandingUp] = useState(false);
   const [tab, setTab] = useState('history');
+  const [user, setUser] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  // On load, ask the server who we are (via the session cookie) so a refresh
+  // keeps you logged in. authChecked avoids flashing the login form first.
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => setUser(data?.user ?? null))
+      .catch(() => setUser(null))
+      .finally(() => setAuthChecked(true));
+  }, []);
+
+  async function logout() {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    setUser(null);
+    setTab('history');
+  }
 
   // Map tab id → the component to render. Keeps the JSX below readable.
   function renderActive() {
@@ -38,7 +57,9 @@ export default function App() {
       case 'hardware':   return <HardwareGuide/>;
       case 'roast':      return <RoastGuide/>;
       case 'quiz':       return <TasteQuiz/>;
-      case 'journal':        return <MyCoffeeJournal/>;
+      // The journal is the only gated tab: show it when logged in, otherwise the
+      // login/signup form. `null` while we're still checking avoids a flash.
+      case 'journal':    return !authChecked ? null : user ? <MyCoffeeJournal/> : <Auth onAuthed={setUser}/>;
       default:           return null;
     }
   }
@@ -81,6 +102,15 @@ export default function App() {
                 )}
               </div>
             </nav>
+            {user && (
+              <button
+                className="nav-tab"
+                onClick={logout}
+                style={{ flexShrink: 0, color: '#f5f0e8', border: '1px solid rgba(245,240,232,0.3)' }}
+              >
+                Log out
+              </button>
+            )}
           </header>
           <main className="main">{renderActive()}</main>
         </div>
