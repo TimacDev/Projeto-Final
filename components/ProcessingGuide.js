@@ -67,7 +67,7 @@ export default function ProcessingGuide() {
           <div key={p.id} className={`proc-card${selected.id===p.id?' active':''}`} onClick={() => setSelected(p)}>
             <div className="proc-cherry">
               {p.cherry.map((layer, i) => (
-                <span key={i} style={{display:'inline-flex',alignItems:'center',gap:6}}>
+                <span key={i} className="proc-cherry-seg">
                   {i > 0 && <span className="proc-cherry-arrow">›</span>}
                   <span className={`proc-cherry-layer ${layer}`}>{layer}</span>
                 </span>
@@ -97,12 +97,12 @@ export default function ProcessingGuide() {
           <div className="proc-eyebrow">{selected.aka}</div>
           <div className="proc-detail-title">{selected.name}</div>
           <div className="proc-detail-tagline">{selected.tagline}</div>
-          <p style={{fontSize:14,lineHeight:1.6,color:'#2c1a0e',marginBottom:14}}>{selected.summary}</p>
+          <p className="proc-detail-summary">{selected.summary}</p>
 
           <div className="proc-section-label">Process flow</div>
           <div className="proc-flow">
             {selected.flow.map((s, i) => (
-              <span key={i} style={{display:'inline-flex',alignItems:'center',gap:6}}>
+              <span key={i} className="proc-flow-seg">
                 {i > 0 && <span className="proc-flow-arrow">→</span>}
                 <div className="proc-flow-step">
                   <span className="step-num">{String(i+1).padStart(2,'0')}</span>
@@ -120,26 +120,26 @@ export default function ProcessingGuide() {
 
         <div>
           <div className="proc-section-label">Cup profile</div>
-          <div style={{display:'flex',flexDirection:'column',gap:6,marginBottom:18}}>
-            <div className="taste-row"><span className="taste-row-label" style={{width:80}}>Clarity</span><TasteDots value={selected.clarity}/></div>
-            <div className="taste-row"><span className="taste-row-label" style={{width:80}}>Sweetness</span><TasteDots value={selected.sweetness}/></div>
-            <div className="taste-row"><span className="taste-row-label" style={{width:80}}>Body</span><TasteDots value={selected.body}/></div>
+          <div className="proc-taste-list">
+            <div className="taste-row"><span className="taste-row-label wide">Clarity</span><TasteDots value={selected.clarity}/></div>
+            <div className="taste-row"><span className="taste-row-label wide">Sweetness</span><TasteDots value={selected.sweetness}/></div>
+            <div className="taste-row"><span className="taste-row-label wide">Body</span><TasteDots value={selected.body}/></div>
           </div>
 
           <div className="proc-section-label">Flavor signature</div>
-          <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:18}}>
+          <div className="proc-flavors">
             {selected.notes.map(n => <span key={n} className="tag">{n}</span>)}
           </div>
 
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
+          <div className="proc-tradeoffs">
             <div>
-              <div className="proc-section-label" style={{color:'#5a7a3a'}}>+ Pros</div>
+              <div className="proc-section-label pros">+ Pros</div>
               <ul className="proc-list">
                 {selected.pros.map(p => <li key={p}>{p}</li>)}
               </ul>
             </div>
             <div>
-              <div className="proc-section-label" style={{color:'#c4793a'}}>− Tradeoffs</div>
+              <div className="proc-section-label cons">− Tradeoffs</div>
               <ul className="proc-list">
                 {selected.cons.map(c => <li key={c}>{c}</li>)}
               </ul>

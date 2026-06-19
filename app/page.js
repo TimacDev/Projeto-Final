@@ -83,7 +83,7 @@ export default function App() {
             <button className="app-logo" onClick={() => setLandingUp(false)}>Grounds</button>
             <nav className="app-nav">
               {GUIDE_GROUPS.map((g, gi) =>
-                <span key={g.theme} style={{display:'flex',alignItems:'center',gap:4}}>
+                <span key={g.theme} className="nav-group-wrap">
                   {gi > 0 && <span className="nav-group-sep"></span>}
                   <div className="nav-group">
                     <span className="nav-group-label">{g.theme}</span>
@@ -103,11 +103,7 @@ export default function App() {
               </div>
             </nav>
             {user && (
-              <button
-                className="nav-tab"
-                onClick={logout}
-                style={{ flexShrink: 0, color: '#f5f0e8', border: '1px solid rgba(245,240,232,0.3)' }}
-              >
+              <button className="nav-tab logout" onClick={logout}>
                 Log out
               </button>
             )}

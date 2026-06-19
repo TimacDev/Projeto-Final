@@ -1,4 +1,8 @@
-import './globals.css';
+import './styles/base.css';
+import './styles/layout.css';
+import './styles/guides.css';
+import './styles/forms.css';
+import './styles/chatbot.css';
 
 export const metadata = {
   title: 'Grounds — Coffee Field Guide',

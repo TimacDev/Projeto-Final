@@ -82,22 +82,8 @@ export default function MyCoffeeJournal() {
         Record every cup you drink and build your taste history.
       </p>
       <div className="log-layout">
-        <form
-          className="sk-box log-form"
-          onSubmit={addEntry}
-          style={{ padding: 20 }}
-        >
-          <div
-            style={{
-              fontFamily: "var(--font-display)",
-              fontStyle: "italic",
-              fontSize: 22,
-              marginBottom: 4,
-              letterSpacing: "-0.01em",
-            }}
-          >
-            Log a cup
-          </div>
+        <form className="sk-box log-form" onSubmit={addEntry}>
+          <div className="log-form-title">Log a cup</div>
 
           <div>
             <div className="log-field-label">Coffee name</div>
@@ -213,29 +199,14 @@ export default function MyCoffeeJournal() {
 
           <div>
             <div className="log-field-label">Tasting notes</div>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "8px 16px",
-                marginTop: 4,
-              }}
-            >
+            <div className="log-notes">
               {noteOptions.map((n) => {
                 const checked = form.notes
                   .split(",")
                   .filter(Boolean)
                   .includes(n);
                 return (
-                  <label
-                    key={n}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      cursor: "pointer",
-                    }}
-                  >
+                  <label key={n} className="log-note-option">
                     <input
                       type="checkbox"
                       value={n}
@@ -260,18 +231,10 @@ export default function MyCoffeeJournal() {
           </button>
         </form>
         <div>
-          <div
-            style={{
-              fontFamily: "var(--font-display)",
-              fontStyle: "italic",
-              fontSize: 22,
-              marginBottom: 14,
-              letterSpacing: "-0.01em",
-            }}
-          >
+          <div className="log-history-title">
             History{" "}
             {entries.length > 0 && (
-              <span style={{ fontSize: 15, color: "#9c845f" }}>
+              <span className="log-history-count">
                 ({entries.length} cups)
               </span>
             )}

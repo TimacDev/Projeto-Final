@@ -104,11 +104,11 @@ export default function Origins() {
           <div className="belt-stat-label">in the bean belt</div>
         </div>
         <div className="belt-key">
-          <div className="belt-key-row"><span className="belt-dot africa"></span> Africa <span style={{color:'#9c845f'}}>· {counts.africa}</span></div>
-          <div className="belt-key-row"><span className="belt-dot americas"></span> Americas <span style={{color:'#9c845f'}}>· {counts.americas}</span></div>
-          <div className="belt-key-row"><span className="belt-dot asia"></span> Asia-Pacific <span style={{color:'#9c845f'}}>· {counts.asia}</span></div>
+          <div className="belt-key-row"><span className="belt-dot africa"></span> Africa <span className="belt-key-count">· {counts.africa}</span></div>
+          <div className="belt-key-row"><span className="belt-dot americas"></span> Americas <span className="belt-key-count">· {counts.americas}</span></div>
+          <div className="belt-key-row"><span className="belt-dot asia"></span> Asia-Pacific <span className="belt-key-count">· {counts.asia}</span></div>
         </div>
-        <div style={{flex:1,minWidth:0,fontSize:13,color:'#7a6245',fontStyle:'italic',fontFamily:'var(--font-display)'}}>
+        <div className="belt-fact">
           Fun fact : Coffee grows in a narrow band 25° north to 25° south of the equator — the "Bean Belt."
         </div>
       </div>
@@ -150,8 +150,8 @@ export default function Origins() {
             <div className="origin-detail-header">
               <div>
                 <span className={`origin-region-badge ${selected.region}`}>{REGIONS[selected.region].label}</span>
-                <div style={{fontFamily:'var(--font-display)',fontStyle:'italic',fontSize:36,marginTop:10,lineHeight:1,letterSpacing:'-0.01em'}}>{selected.country}</div>
-                <div style={{fontFamily:'var(--font-display)',fontSize:16,color:'#7a6245',marginTop:4}}>{selected.subregion}</div>
+                <div className="origin-detail-country">{selected.country}</div>
+                <div className="origin-detail-sub">{selected.subregion}</div>
               </div>
             </div>
 
@@ -164,28 +164,28 @@ export default function Origins() {
                 <div className="origin-stat-label">Harvest</div>
                 <div className="origin-stat-val">{selected.harvest}</div>
               </div>
-              <div style={{gridColumn:'1 / -1'}}>
+              <div className="origin-stat-full">
                 <div className="origin-stat-label">Processing</div>
                 <div className="origin-stat-val">{selected.process}</div>
               </div>
             </div>
 
-            <div className="label" style={{marginBottom:6}}>Tasting profile</div>
-            <div style={{display:'flex',flexDirection:'column',gap:6,marginBottom:14}}>
-              <div className="taste-row"><span className="taste-row-label" style={{width:80}}>Body</span><TasteDots value={selected.body}/></div>
-              <div className="taste-row"><span className="taste-row-label" style={{width:80}}>Acidity</span><TasteDots value={selected.acidity}/></div>
-              <div className="taste-row"><span className="taste-row-label" style={{width:80}}>Sweetness</span><TasteDots value={selected.sweetness}/></div>
+            <div className="label origin-taste-label">Tasting profile</div>
+            <div className="origin-taste-list">
+              <div className="taste-row"><span className="taste-row-label wide">Body</span><TasteDots value={selected.body}/></div>
+              <div className="taste-row"><span className="taste-row-label wide">Acidity</span><TasteDots value={selected.acidity}/></div>
+              <div className="taste-row"><span className="taste-row-label wide">Sweetness</span><TasteDots value={selected.sweetness}/></div>
             </div>
 
             <div className="label">Flavor notes</div>
-            <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:14}}>
+            <div className="origin-detail-notes">
               {selected.notes.map(n => <span key={n} className="tag">{n}</span>)}
             </div>
 
-            <p style={{fontSize:15,lineHeight:1.55,color:'#2c1a0e',marginBottom:14}}>{selected.desc}</p>
+            <p className="origin-detail-desc">{selected.desc}</p>
 
             <div className="label">Best brewed as</div>
-            <div className="brew-pills" style={{marginBottom:6}}>
+            <div className="brew-pills origin-detail-brews">
               {selected.brews.map(b => <span key={b} className="brew-pill">{b}</span>)}
             </div>
 

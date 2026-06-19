@@ -27,23 +27,23 @@ export default function HardwareGuide() {
       </div>
 
       <div className="label">Where your money actually shows up in the cup</div>
-      <div className="divider" style={{marginTop:4}}></div>
+      <div className="divider tight"></div>
       <div className="hw-rank">
         {HW_PRIORITY.map((p, i) =>
           <div key={p.name} className={`hw-rank-row${i===0 ? ' first' : ''}`}>
             <div className="hw-rank-num">{i+1}</div>
             <div className="hw-rank-name">{p.name}</div>
-            <div className="hw-rank-bar"><div className="hw-rank-fill" style={{width:`${p.pct}%`}}></div></div>
+            <div className="hw-rank-bar"><div className="hw-rank-fill" style={{'--fill':`${p.pct}%`}}></div></div>
             <div className="hw-rank-pct">{p.pct}%</div>
           </div>
         )}
       </div>
-      <p style={{fontSize:13,color:'#7a6245',fontStyle:'italic',marginBottom:32,marginTop:8}}>
+      <p className="hw-note">
         Rough impact-on-cup-quality estimate. Spend accordingly.
       </p>
 
       <div className="label">Why the grinder, specifically</div>
-      <div className="divider" style={{marginTop:4}}></div>
+      <div className="divider tight"></div>
       <div className="hw-vs">
         <div className="hw-vs-col">
           <h4>Blade grinder</h4>
@@ -69,7 +69,7 @@ export default function HardwareGuide() {
       </div>
 
       <div className="label">Burr shape — conical vs flat</div>
-      <div className="divider" style={{marginTop:4}}></div>
+      <div className="divider tight"></div>
       <div className="hw-grinder-types">
         <div className="hw-grinder-card">
           <h4>Conical burrs</h4>
@@ -86,7 +86,7 @@ export default function HardwareGuide() {
       </div>
 
       <div className="label">The rest of the kit</div>
-      <div className="divider" style={{marginTop:4}}></div>
+      <div className="divider tight"></div>
       <div className="hw-kit">
         {HW_KIT.map(k =>
           <div key={k.name} className="hw-kit-item">

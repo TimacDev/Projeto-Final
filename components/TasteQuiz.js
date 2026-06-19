@@ -52,17 +52,17 @@ export default function TasteQuiz() {
     return (
       <div className="quiz-wrap">
         <h1 className="page-title">Your Coffee Profile</h1>
-        <div className="sk-box result-box" style={{marginTop:16}}>
+        <div className="sk-box result-box quiz-result">
           <div className="result-title">{result.title}</div>
           <div className="result-tags">{result.tags.map(t => <span key={t} className="result-tag">{t}</span>)}</div>
-          <p style={{fontSize:16,lineHeight:1.5,color:'#2c1a0e',marginBottom:16}}>{result.desc}</p>
+          <p className="quiz-desc">{result.desc}</p>
           <div className="divider"></div>
           <div className="label">Coffees to try</div>
           <div className="rec-grid">
-            {result.recs.map(r => <div key={r} className="sk-box dashed" style={{textAlign:'center',fontSize:15}}>{r}</div>)}
+            {result.recs.map(r => <div key={r} className="sk-box dashed quiz-rec">{r}</div>)}
           </div>
         </div>
-        <button className="btn" style={{marginTop:12}} onClick={restart}>← Retake quiz</button>
+        <button className="btn quiz-retake" onClick={restart}>← Retake quiz</button>
       </div>
     );
   }
@@ -72,8 +72,8 @@ export default function TasteQuiz() {
     <div className="quiz-wrap">
       <h1 className="page-title">Taste Quiz</h1>
       <p className="page-sub">5 quick questions to find your flavor profile.</p>
-      <div className="progress-bar" style={{marginBottom:24}}>
-        <div className="progress-fill" style={{width:`${(step/QUIZ_QUESTIONS.length)*100}%`}}></div>
+      <div className="progress-bar quiz-progress">
+        <div className="progress-fill" style={{'--fill':`${(step/QUIZ_QUESTIONS.length)*100}%`}}></div>
       </div>
       <div className="label">Question {step+1} of {QUIZ_QUESTIONS.length}</div>
       <div className="quiz-question">{q.q}</div>

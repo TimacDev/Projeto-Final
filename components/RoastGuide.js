@@ -15,30 +15,30 @@ export default function RoastGuide() {
     <div>
       <h1 className="page-title">🔥 Roast Types</h1>
       <p className="page-sub">Slide to explore how roast level changes flavor.</p>
-      <div style={{maxWidth:600}}>
+      <div className="roast-slider">
         <div className="roast-labels">
-          {ROAST_DATA.map((rd, i) => <span key={i} style={{fontWeight:i===level?700:400,color:i===level?'#1a1208':'#9c845f'}}>{rd.name.split(' ')[0]}</span>)}
+          {ROAST_DATA.map((rd, i) => <span key={i} className={i===level ? 'active' : undefined}>{rd.name.split(' ')[0]}</span>)}
         </div>
         <input type="range" min={0} max={3} step={1} value={level}
           onChange={e => setLevel(Number(e.target.value))}
-          style={{width:'100%',accentColor:'#e8a05a',cursor:'pointer',marginBottom:20,height:8}}
+          className="roast-range"
         />
       </div>
-      <div className="sk-box" style={{padding:'16px 20px',marginBottom:20}}>
-        <div style={{fontFamily:'var(--font-display)',fontStyle:'italic',fontSize:30,marginBottom:8,letterSpacing:'-0.01em'}}>{r.name}</div>
-        <div style={{display:'flex',gap:16,marginBottom:12,flexWrap:'wrap'}}>
+      <div className="sk-box roast-card">
+        <div className="roast-name">{r.name}</div>
+        <div className="roast-stats">
           <div><span className="label">Temperature</span><br/><b>{r.temp}</b></div>
           <div><span className="label">Acidity</span><br/><b>{r.acidity}</b></div>
           <div><span className="label">Body</span><br/><b>{r.body}</b></div>
         </div>
         <div className="label">Flavor notes</div>
-        <div style={{display:'flex',gap:8,flexWrap:'wrap',margin:'6px 0 12px'}}>
+        <div className="roast-flavors">
           {r.flavor.map(f => <span key={f} className="tag">{f}</span>)}
         </div>
         <div className="divider"></div>
-        <p style={{fontSize:15,lineHeight:1.5,color:'#2c1a0e',marginBottom:10}}>{r.notes}</p>
+        <p className="roast-notes">{r.notes}</p>
         <div className="label">Best beans for this roast</div>
-        <div style={{fontSize:14,color:'#7a6245'}}>{r.beans}</div>
+        <div className="roast-beans">{r.beans}</div>
       </div>
       <div className="roast-compare">
         {ROAST_DATA.map((rd, i) =>

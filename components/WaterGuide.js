@@ -29,7 +29,7 @@ export default function WaterGuide() {
           <div className="meta">— SCA brewing standard</div>
         </div>
         <div className="water-targets">
-          <div className="label" style={{marginBottom:4}}>SCA target window</div>
+          <div className="label">SCA target window</div>
           <div className="water-target-row">
             <span className="water-target-name">TDS</span>
             <span><span className="water-target-num">150</span><span className="water-target-unit">ppm (±50)</span></span>
@@ -49,15 +49,15 @@ export default function WaterGuide() {
         </div>
       </div>
 
-      <div className="sk-box accent" style={{padding:'16px 20px', marginBottom:28}}>
-        <div className="label" style={{color:'#5a4632',marginBottom:4}}>Important rule of thumb</div>
-        <div style={{fontFamily:'var(--font-display)',fontStyle:'italic',fontSize:22,lineHeight:1.25,letterSpacing:'-0.01em'}}>
+      <div className="sk-box accent water-rule">
+        <div className="label">Important rule of thumb</div>
+        <div className="water-rule-text">
           If your water doesn't taste good on its own, it won't make coffee that does.
         </div>
       </div>
 
       <div className="label">The three minerals that matter</div>
-      <div className="divider" style={{marginTop:4}}></div>
+      <div className="divider tight"></div>
       <div className="mineral-grid">
         {WATER_MINERALS.map(m =>
           <div key={m.sym} className="mineral-card">
@@ -70,7 +70,7 @@ export default function WaterGuide() {
       </div>
 
       <div className="label">What to brew with</div>
-      <div className="divider" style={{marginTop:4}}></div>
+      <div className="divider tight"></div>
       <div>
         {WATER_SOURCES.map(s =>
           <div key={s.name} className={`source-row${s.score>=4 ? ' best' : ''}`}>

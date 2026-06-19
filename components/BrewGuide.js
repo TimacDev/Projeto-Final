@@ -23,22 +23,22 @@ export default function BrewGuide() {
         <div className="brew-stat"><div className="brew-stat-val">{method.difficulty}</div><div className="brew-stat-key">Difficulty</div></div>
       </div>
       <div className="divider"></div>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+      <div className="brew-step-head">
         <div className="label">Step {step+1} of {method.steps.length}</div>
-        <div style={{display:'flex',gap:8}}>
+        <div className="brew-step-actions">
           <button className="btn" onClick={() => setStep(s => Math.max(0, s-1))} disabled={step===0}>← Back</button>
           <button className="btn accent" onClick={() => setStep(s => Math.min(method.steps.length-1, s+1))} disabled={step===method.steps.length-1}>Next →</button>
           {step === method.steps.length-1 && <button className="btn primary" onClick={() => setStep(0)}>Start over</button>}
         </div>
       </div>
-      <div className="progress-bar" style={{marginBottom:20}}>
-        <div className="progress-fill" style={{width:`${((step+1)/method.steps.length)*100}%`}}></div>
+      <div className="progress-bar brew-progress">
+        <div className="progress-fill" style={{'--fill':`${((step+1)/method.steps.length)*100}%`}}></div>
       </div>
       <div className="steps-list">
         {method.steps.map((s, i) =>
-          <div key={i} className="step-row" style={{opacity: i===step ? 1 : i<step ? 0.5 : 0.3}}>
+          <div key={i} className={`step-row ${i===step ? 'current' : i<step ? 'past' : 'future'}`}>
             <div className={`step-num${i<step ? ' done' : ''}`}>{i<step ? '✓' : i+1}</div>
-            <div className="step-text" style={{fontWeight: i===step ? 700 : 400}}>{s}</div>
+            <div className="step-text">{s}</div>
           </div>
         )}
       </div>
