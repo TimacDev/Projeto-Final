@@ -67,4 +67,8 @@ VALUES
   (1, 'Gesha Anaerobic',     'Altitude Works',   'Panama',   'Chiriquí',         'Hacienda La Esmeralda','Gesha',          'anaerobic','medium-light', '2026-05-30', 'tropical fruit, wine, rose',     true);
 
 INSERT INTO brew_logs (user_id, coffee_id, brewed_at, method, dose_g, water_g, grind_setting, water_temp_c, brew_time_sec, notes)
-VALUES (1, 1, '2026-06-15', 'Pour-Over', 18, 300, 'medium-fine', 93, 210, 'fruity,sweet');
+VALUES
+  (1, 1, '2026-06-15', 'Pour-Over',    18, 120, 'medium-fine',  93, 210, 'fruity,sweet'),
+  (1, 2, '2026-06-16', 'AeroPress',    15, 100, 'fine',         88, 90,  'floral,sour/fermented'),
+  (2, 3, '2026-06-17', 'Espresso',     18, 36,  'extra-fine',   92, 28,  'roasted,nutty/cocoa'),
+  (2, 5, '2026-06-18', 'French-Press', 30, 120, 'coarse',       96, 240, 'sweet,fruity');
