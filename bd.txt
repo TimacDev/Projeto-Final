@@ -11,7 +11,7 @@ CREATE TABLE users (
 
 CREATE TABLE coffees (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT NOT NULL,
+  user_id INT,
   coffee_name VARCHAR(200) NOT NULL,
   roaster VARCHAR(200) NOT NULL,
   country VARCHAR(200) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE coffees (
   roaster_notes VARCHAR(200) NOT NULL,
   status BOOL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE comments (
