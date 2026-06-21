@@ -22,7 +22,7 @@ CREATE TABLE coffees (
   roast_level ENUM('light', 'medium-light', 'medium', 'medium-dark', 'dark') DEFAULT ('medium'),
   roast_date DATE,
   roaster_notes VARCHAR(200) NOT NULL,
-  status BOOL,
+  status BOOL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );

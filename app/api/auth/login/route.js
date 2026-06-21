@@ -2,11 +2,16 @@ import { cookies } from 'next/headers';
 import db from '../../../../lib/db';
 import { verifyPassword, signSession, SESSION_COOKIE, cookieOptions } from '../../../../lib/auth';
 
+const EMAIL_RE = /^[\w\-.+]{3,}@([\w-]+\.){1,15}[\w-]{2,4}$/;
+
 export async function POST(request) {
   const { email, password } = await request.json();
 
   if (!email || !password) {
     return Response.json({ error: 'Email and password are required.' }, { status: 400 });
+  }
+  if (!EMAIL_RE.test(email)) {
+    return Response.json({ error: 'Please enter a valid email address.' }, { status: 400 });
   }
 
   const [rows] = await db.query(
@@ -15,8 +20,6 @@ export async function POST(request) {
   );
   const account = rows[0];
 
-  // Same generic response whether the email is unknown or the password is wrong,
-  // so we never reveal which emails have accounts.
   const invalid = () => Response.json({ error: 'Invalid email or password.' }, { status: 401 });
 
   if (!account) return invalid();

@@ -1,23 +1,13 @@
 import { useState, useEffect } from "react";
-
-const EMPTY_FORM = {
-  coffee_id: "",
-  brewed_at: "",
-  method: "",
-  dose_g: "",
-  water_g: "",
-  grind_setting: "",
-  water_temp_c: "",
-  brew_time_sec: "",
-  notes: "",
-};
+import BrewLogForm from "./BrewLogForm";
+import CoffeeForm from "./CoffeeForm";
 
 export default function MyCoffeeJournal() {
   const [entries, setEntries] = useState([]);
   const [coffees, setCoffees] = useState([]);
-  const [form, setForm] = useState(EMPTY_FORM);
   const [methods, setMethods] = useState([]);
   const [noteOptions, setNoteOptions] = useState([]);
+  const [activeForm, setActiveForm] = useState("brew");
 
   useEffect(() => {
     fetch("/api/coffees")
@@ -48,10 +38,7 @@ export default function MyCoffeeJournal() {
       .catch(() => {});
   }, []);
 
-  async function addEntry(e) {
-    e.preventDefault();
-    if (!form.coffee_id) return;
-
+  async function addEntry(form) {
     const res = await fetch("/api/brew-logs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -72,7 +59,19 @@ export default function MyCoffeeJournal() {
       },
       ...prev,
     ]);
-    setForm(EMPTY_FORM);
+  }
+
+  async function addCoffee(form) {
+    const res = await fetch("/api/coffees", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    if (!res.ok) return;
+
+    const data = await res.json();
+    setCoffees((prev) => [...prev, data]);
   }
 
   return (
@@ -82,154 +81,32 @@ export default function MyCoffeeJournal() {
         Record every cup you drink and build your taste history.
       </p>
       <div className="log-layout">
-        <form className="sk-box log-form" onSubmit={addEntry}>
-          <div className="log-form-title">Log a cup</div>
-
-          <div>
-            <div className="log-field-label">Coffee name</div>
-            <select
-              className="log-input"
-              value={form.coffee_id}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, coffee_id: e.target.value }))
-              }
+        <div>
+          <div className="log-form-toggle">
+            <button
+              className={`btn${activeForm === "brew" ? " primary" : ""}`}
+              onClick={() => setActiveForm("brew")}
             >
-              <option value="">— select a coffee —</option>
-              {coffees.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <div className="log-field-label">Brewed at</div>
-            <input
-              className="log-input"
-              type="date"
-              value={form.brewed_at}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, brewed_at: e.target.value }))
-              }
-            />
-          </div>
-
-          <div>
-            <div className="log-field-label">Brew method</div>
-            <select
-              className="log-input"
-              value={form.method}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, method: e.target.value }))
-              }
+              Log a cup ☕
+            </button>
+            <button
+              className={`btn${activeForm === "coffee" ? " primary" : ""}`}
+              onClick={() => setActiveForm("coffee")}
             >
-              <option value="">— select —</option>
-              {methods.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
+              Log a coffee 🫘
+            </button>
           </div>
-
-          <div>
-            <div className="log-field-label">Coffee dosage (g)</div>
-            <input
-              className="log-input"
-              type="number"
-              placeholder="e.g. 18"
-              value={form.dose_g}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, dose_g: e.target.value }))
-              }
+          {activeForm === "brew" ? (
+            <BrewLogForm
+              coffees={coffees}
+              methods={methods}
+              noteOptions={noteOptions}
+              onSubmit={addEntry}
             />
-          </div>
-
-          <div>
-            <div className="log-field-label">Water dosage (g)</div>
-            <input
-              className="log-input"
-              type="number"
-              placeholder="e.g. 300"
-              value={form.water_g}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, water_g: e.target.value }))
-              }
-            />
-          </div>
-
-          <div>
-            <div className="log-field-label">Grind setting</div>
-            <input
-              className="log-input"
-              placeholder="e.g. 15 clicks, medium-fine"
-              value={form.grind_setting}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, grind_setting: e.target.value }))
-              }
-            />
-          </div>
-
-          <div>
-            <div className="log-field-label">Water temp (°C)</div>
-            <input
-              className="log-input"
-              type="number"
-              placeholder="e.g. 93"
-              value={form.water_temp_c}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, water_temp_c: e.target.value }))
-              }
-            />
-          </div>
-
-          <div>
-            <div className="log-field-label">Brew time (sec)</div>
-            <input
-              className="log-input"
-              type="number"
-              placeholder="e.g. 210"
-              value={form.brew_time_sec}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, brew_time_sec: e.target.value }))
-              }
-            />
-          </div>
-
-          <div>
-            <div className="log-field-label">Tasting notes</div>
-            <div className="log-notes">
-              {noteOptions.map((n) => {
-                const checked = form.notes
-                  .split(",")
-                  .filter(Boolean)
-                  .includes(n);
-                return (
-                  <label key={n} className="log-note-option">
-                    <input
-                      type="checkbox"
-                      value={n}
-                      checked={checked}
-                      onChange={(e) => {
-                        const current = form.notes.split(",").filter(Boolean);
-                        const updated = e.target.checked
-                          ? [...current, n]
-                          : current.filter((v) => v !== n);
-                        setForm((f) => ({ ...f, notes: updated.join(",") }));
-                      }}
-                    />
-                    {n}
-                  </label>
-                );
-              })}
-            </div>
-          </div>
-
-          <button className="btn primary" type="submit">
-            Add entry ✓
-          </button>
-        </form>
+          ) : (
+            <CoffeeForm onSubmit={addCoffee} />
+          )}
+        </div>
         <div>
           <div className="log-history-title">
             History{" "}
