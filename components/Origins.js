@@ -53,7 +53,7 @@ export default function Origins() {
               <div className="origin-card-country">{o.country}</div>
               <div className="origin-card-sub">{o.subregion}</div>
               <div className="origin-card-notes">
-                {o.notes.slice(0,3).map(n => <span key={n} className="origin-card-note">{n}</span>)}
+                {o.notes.slice(0,4).map(n => <span key={n} className="origin-card-note">{n}</span>)}
               </div>
               <div className="origin-card-taste">
                 <div className="taste-row"><span className="taste-row-label">Body</span><TasteDots value={o.body}/></div>
@@ -68,7 +68,7 @@ export default function Origins() {
       {selected && createPortal(
         <div className="overlay-bg" onClick={() => setSelected(null)}>
           <div className="overlay-card" onClick={e => e.stopPropagation()}>
-            <button className="overlay-close" onClick={() => setSelected(null)}>✕ close</button>
+            <button className="overlay-close" onClick={() => setSelected(null)}>✕</button>
             <div className="origin-detail-header">
               <div>
                 <span className={`origin-region-badge ${selected.region}`}>{REGIONS[selected.region].label}</span>
@@ -87,7 +87,7 @@ export default function Origins() {
                 <div className="origin-stat-val">{selected.harvest}</div>
               </div>
               <div className="origin-stat-full">
-                <div className="origin-stat-label">Processing</div>
+                <div className="origin-stat-label">Common processing</div>
                 <div className="origin-stat-val">{selected.process}</div>
               </div>
             </div>
