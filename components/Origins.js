@@ -1,85 +1,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import TasteDots from './TasteDots';
-
-const ORIGINS = [
-  { id:1, country:'Ethiopia', region:'africa', subregion:'Yirgacheffe',
-    altitude:'1,750–2,200 m', harvest:'Oct – Dec', process:'Washed / Natural',
-    body:2, acidity:5, sweetness:4,
-    notes:['Jasmine','Lemon','Blueberry','Bergamot'],
-    brews:['Pour-Over','AeroPress'],
-    desc:'The birthplace of coffee. Yirgacheffe sits in the southern Ethiopian highlands where Arabica still grows wild. Expect a tea-like body, electric acidity, and a perfume that hangs in the cup long after the last sip.',
-    fact:'Legend says a 9th-century goatherd named Kaldi noticed his goats dancing after eating red coffee cherries.' },
-  { id:2, country:'Kenya', region:'africa', subregion:'Nyeri / Kirinyaga',
-    altitude:'1,400–2,100 m', harvest:'Oct – Dec (main)', process:'Washed, double-fermented',
-    body:3, acidity:5, sweetness:4,
-    notes:['Blackcurrant','Tomato','Grapefruit','Wine'],
-    brews:['Pour-Over','Filter'],
-    desc:'Kenya AA is famous for its piercing acidity and savory-sweet complexity. The SL-28 and SL-34 cultivars, paired with rigorous double-fermentation, create cups that taste like crushed berries with a squeeze of citrus.',
-    fact:'Beans are graded AA, AB, PB by size — AA is the largest and most prized at auction.' },
-  { id:3, country:'Rwanda', region:'africa', subregion:'Western Province',
-    altitude:'1,500–2,000 m', harvest:'Mar – Jul', process:'Washed',
-    body:2, acidity:4, sweetness:4,
-    notes:['Red apple','Brown sugar','Floral','Black tea'],
-    brews:['Pour-Over','AeroPress'],
-    desc:'Rwanda came late to specialty coffee but quickly became a darling of the third wave. Smallholder farms and cooperative washing stations produce delicate, clean cups with red-fruit sweetness.',
-    fact:'The "potato defect" — a rare flavor flaw caused by an insect — is the famous quirk of Rwandan beans. Washing stations now hand-sort for it.' },
-  { id:4, country:'Colombia', region:'americas', subregion:'Huila',
-    altitude:'1,200–1,800 m', harvest:'Two harvests per year', process:'Washed',
-    body:3, acidity:4, sweetness:4,
-    notes:['Caramel','Red apple','Toffee','Citrus'],
-    brews:['Espresso','Pour-Over','French Press'],
-    desc:'Colombia has two harvests a year thanks to its position straddling the equator. Huila in the south produces some of the cleanest, sweetest cups in the country — versatile enough for any brew method.',
-    fact:'Colombia is the only major producer that grows 100% Arabica — no robusta allowed.' },
-  { id:5, country:'Brazil', region:'americas', subregion:'Cerrado / Sul de Minas',
-    altitude:'800–1,300 m', harvest:'May – Sep', process:'Natural / Pulped Natural',
-    body:4, acidity:2, sweetness:5,
-    notes:['Milk chocolate','Hazelnut','Peanut','Brown sugar'],
-    brews:['Espresso','French Press'],
-    desc:'The world’s largest producer and the spine of most espresso blends. Brazilian coffees are low-acid, full-bodied, and unmistakably nutty-chocolatey. They’re the comfort food of coffee.',
-    fact:'Brazil produces about a third of the world’s coffee — roughly one in every three cups globally.' },
-  { id:6, country:'Guatemala', region:'americas', subregion:'Antigua',
-    altitude:'1,500–1,700 m', harvest:'Nov – Mar', process:'Washed',
-    body:3, acidity:4, sweetness:4,
-    notes:['Cocoa','Orange zest','Spice','Caramel'],
-    brews:['Pour-Over','Espresso'],
-    desc:'Three volcanoes surround the Antigua valley. The mineral-rich soil and shade-grown Bourbon trees yield coffee with a velvety body and a smoky-sweet finish that hints at chocolate and spice.',
-    fact:'Antigua coffees often carry a faint smokiness — a trace memory of the active volcano Fuego nearby.' },
-  { id:7, country:'Costa Rica', region:'americas', subregion:'Tarrazú',
-    altitude:'1,200–1,900 m', harvest:'Dec – Mar', process:'Honey / Washed',
-    body:3, acidity:4, sweetness:4,
-    notes:['Honey','Stone fruit','Almond','Bright citrus'],
-    brews:['Pour-Over','AeroPress'],
-    desc:'Costa Rica banned robusta in 1989 — only Arabica may be grown here. Tarrazú’s "Strictly Hard Bean" coffees, grown above 1,200 m, are dense, sweet, and remarkably clean.',
-    fact:'Costa Rica pioneered the honey process — where some fruit pulp is left clinging to the bean while drying.' },
-  { id:8, country:'Sumatra', region:'asia', subregion:'Mandheling / Lintong',
-    altitude:'900–1,500 m', harvest:'Oct – Mar', process:'Wet-hulled (Giling Basah)',
-    body:5, acidity:1, sweetness:3,
-    notes:['Cedar','Tobacco','Dark chocolate','Earthy spice'],
-    brews:['French Press','Espresso'],
-    desc:'Sumatra is unmistakable. The wet-hulling process strips the bean of its parchment while still wet, producing the syrupy, low-acid, earthy cup the island is famous for. Polarizing — you either love it or you don’t.',
-    fact:'The blue-green tinge of unroasted Sumatran beans is the visual signature of wet-hulling — not a defect.' },
-  { id:9, country:'Yemen', region:'asia', subregion:'Haraz / Bani Matar',
-    altitude:'1,500–2,400 m', harvest:'Oct – Dec', process:'Natural (sun-dried)',
-    body:4, acidity:3, sweetness:3,
-    notes:['Dried fruit','Wine','Cardamom','Cocoa nibs'],
-    brews:['Pour-Over','Turkish'],
-    desc:'Coffee’s adolescence happened in Yemen. The world’s first commercial coffee — shipped from the port of Mocha — came from these terraced mountainsides. Wild, complex, and unlike anything else on earth.',
-    fact:'The word "mocha" originally meant "from the port of Al-Mokha in Yemen" — not chocolate.' },
-  { id:10, country:'Papua New Guinea', region:'asia', subregion:'Eastern Highlands',
-    altitude:'1,300–1,900 m', harvest:'Apr – Sep', process:'Washed',
-    body:3, acidity:3, sweetness:4,
-    notes:['Tropical fruit','Brown sugar','Floral','Light spice'],
-    brews:['Pour-Over','French Press'],
-    desc:'PNG coffee comes almost entirely from smallholder "garden farms" — typically fewer than 20 trees per family. The result is a clean, fruit-forward cup that bridges African brightness and Asian body.',
-    fact:'Coffee arrived in PNG via Jamaican Blue Mountain seedlings in the 1920s.' },
-];
-
-const REGIONS = {
-  africa:   { label:'Africa',       short:'Africa' },
-  americas: { label:'The Americas', short:'Americas' },
-  asia:     { label:'Asia-Pacific', short:'Asia-Pacific' },
-};
+import { ORIGINS, REGIONS } from '../data/origins';
 
 export default function Origins() {
   const [region, setRegion] = useState('all');
@@ -95,7 +17,7 @@ export default function Origins() {
 
   return (
     <div>
-      <h1 className="page-title">🌍 Origins Guide</h1>
+      <h1 className="page-title">Origins Guide</h1>
       <p className="page-sub">Every great cup starts somewhere. Trace coffee back to its roots — from Ethiopian highlands to Sumatran lowlands.</p>
 
       <div className="origins-intro">
