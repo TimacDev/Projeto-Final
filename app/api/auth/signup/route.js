@@ -14,7 +14,7 @@ export async function POST(request) {
   if (!EMAIL_RE.test(email_lowerCase)){
     return Response.json({ error: 'Please enter a valid email address.' }, { status: 400 });
   }
-  if (password.length <= 8) {
+  if (password.length < 8) {
     return Response.json({ error: 'Password must be at least 8 characters.' }, { status: 400 });
   }
 
