@@ -22,6 +22,7 @@ CREATE TABLE coffees (
   roast_level ENUM('light', 'medium-light', 'medium', 'medium-dark', 'dark') DEFAULT ('medium'),
   roast_date DATE,
   roaster_notes VARCHAR(200) NOT NULL,
+  rating TINYINT CHECK (rating BETWEEN 1 AND 10),
   status BOOL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
@@ -31,6 +32,8 @@ CREATE TABLE comments (
   id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
   coffee_id INT NOT NULL,
+  comment TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (coffee_id) REFERENCES coffees(id) ON DELETE CASCADE
 );
@@ -47,6 +50,7 @@ CREATE TABLE brew_logs (
   water_temp_c SMALLINT,
   brew_time_sec SMALLINT,
   notes SET('roasted', 'spices', 'nutty/cocoa', 'sweet', 'floral', 'fruity', 'green/vegetative', 'sour/fermented', 'other') DEFAULT('other'),
+  rating TINYINT CHECK (rating BETWEEN 1 AND 10),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (coffee_id) REFERENCES coffees(id) ON DELETE CASCADE
@@ -58,17 +62,25 @@ VALUES
   ('Carlos Mendes', 'carlos.mendes@email.com', 'coffee123'),
   ('Sofia Ribeiro', 'sofia.ribeiro@email.com', 'latte456');
 
-INSERT INTO coffees (user_id, coffee_name, roaster, country, region, producer, variety, coffee_process, roast_level, roast_date, roaster_notes, status)
+INSERT INTO coffees (user_id, coffee_name, roaster, country, region, producer, variety, coffee_process, roast_level, roast_date, roaster_notes, rating, status)
 VALUES
-  (1, 'Cerrado Sunrise',     'Torra Viva',       'Brazil',   'Cerrado Mineiro',  'Fazenda São João',    'Yellow Bourbon',  'natural',  'medium',       '2026-05-18', 'sweet, fruity, nutty',           true),
-  (1, 'Yirgacheffe Bloom',   'Nordic Roast Co',  'Ethiopia', 'Yirgacheffe',      'Konga Cooperative',   'Heirloom',        'washed',   'light',        '2026-04-10', 'jasmine, bergamot, lemon zest',  true),
-  (1, 'Huila Valley Dark',   'Café del Monte',   'Colombia', 'Huila',            'El Paraíso Farm',     'Castillo',        'honey',    'medium-dark',  '2026-03-22', 'chocolate, caramel, dried fruit', false),
-  (1, 'Sumatra Wet-Hulled',  'Island Beans',     'Indonesia','Aceh',             'Gayo Highlands Co-op','Typica',          'wet-hulled','dark',        '2026-02-15', 'earthy, cedar, dark chocolate',  true),
-  (1, 'Gesha Anaerobic',     'Altitude Works',   'Panama',   'Chiriquí',         'Hacienda La Esmeralda','Gesha',          'anaerobic','medium-light', '2026-05-30', 'tropical fruit, wine, rose',     true);
+  (1, 'Cerrado Sunrise',     'Torra Viva',       'Brazil',   'Cerrado Mineiro',  'Fazenda São João',     'Yellow Bourbon', 'natural',   'medium',       '2026-05-18', 'sweet, fruity, nutty',            8,  true),
+  (1, 'Yirgacheffe Bloom',   'Nordic Roast Co',  'Ethiopia', 'Yirgacheffe',      'Konga Cooperative',    'Heirloom',       'washed',    'light',        '2026-04-10', 'jasmine, bergamot, lemon zest',   9,  true),
+  (1, 'Huila Valley Dark',   'Café del Monte',   'Colombia', 'Huila',            'El Paraíso Farm',      'Castillo',       'honey',     'medium-dark',  '2026-03-22', 'chocolate, caramel, dried fruit', 6,  false),
+  (1, 'Sumatra Wet-Hulled',  'Island Beans',     'Indonesia','Aceh',             'Gayo Highlands Co-op', 'Typica',         'wet-hulled','dark',         '2026-02-15', 'earthy, cedar, dark chocolate',   7,  true),
+  (1, 'Gesha Anaerobic',     'Altitude Works',   'Panama',   'Chiriquí',         'Hacienda La Esmeralda','Gesha',          'anaerobic', 'medium-light', '2026-05-30', 'tropical fruit, wine, rose',      10, true);
 
-INSERT INTO brew_logs (user_id, coffee_id, brewed_at, method, dose_g, water_g, grind_setting, water_temp_c, brew_time_sec, notes)
+INSERT INTO brew_logs (user_id, coffee_id, brewed_at, method, dose_g, water_g, grind_setting, water_temp_c, brew_time_sec, notes, rating)
 VALUES
-  (1, 1, '2026-06-15', 'Pour-Over',    18, 120, 'medium-fine',  93, 210, 'fruity,sweet'),
-  (1, 2, '2026-06-16', 'AeroPress',    15, 100, 'fine',         88, 90,  'floral,sour/fermented'),
-  (2, 3, '2026-06-17', 'Espresso',     18, 36,  'extra-fine',   92, 28,  'roasted,nutty/cocoa'),
-  (2, 5, '2026-06-18', 'French-Press', 30, 120, 'coarse',       96, 240, 'sweet,fruity');
+  (1, 2, '2026-05-20', 'Pour-Over',    18, 300, 'medium-fine',  93, 215, 'floral,fruity',          9),
+  (1, 1, '2026-05-23', 'French-Press', 30, 500, 'coarse',       95, 240, 'sweet,nutty/cocoa',      7),
+  (1, 5, '2026-05-27', 'AeroPress',    15, 200, 'fine',         88, 80,  'fruity,sour/fermented',  10),
+  (1, 3, '2026-06-01', 'Espresso',     18, 36,  'extra-fine',   92, 27,  'roasted,nutty/cocoa',    6),
+  (1, 4, '2026-06-04', 'Pour-Over',    20, 320, 'medium',       94, 200, 'sweet,spices',           8),
+  (2, 1, '2026-06-07', 'AeroPress',    16, 220, 'fine',         89, 90,  'fruity,sweet',           8),
+  (2, 5, '2026-06-10', 'Pour-Over',    18, 300, 'medium-fine',  91, 205, 'floral,fruity',          9),
+  (1, 2, '2026-06-13', 'ColdBrew',     40, 600, 'coarse',       20, 720, 'floral,sweet',           8),
+  (2, 3, '2026-06-16', 'Espresso',     19, 38,  'extra-fine',   93, 30,  'roasted,spices',         5),
+  (1, 4, '2026-06-19', 'French-Press', 28, 480, 'coarse',       96, 245, 'sweet,nutty/cocoa',      7),
+  (1, 5, '2026-06-21', 'Pour-Over',    20, 320, 'medium',       90, 195, 'fruity,floral',          10),
+  (2, 2, '2026-06-22', 'AeroPress',    15, 200, 'fine',         87, 85,  'floral,sour/fermented',  9);
