@@ -59,8 +59,8 @@ CREATE TABLE brew_logs (
 
 INSERT INTO users (user_name, email, user_password)
 VALUES
-  ('Carlos Mendes', 'carlos.mendes@email.com', 'coffee123'),
-  ('Sofia Ribeiro', 'sofia.ribeiro@email.com', 'latte456');
+  ('User', 'teste@teste.teste.com', '$2b$10$Z5OAGRMoLYtZRT8Yb9n3EuNfj8tYdizhoRH7aUiuB.Tlxa4ruHoBu'),
+  ('User2', 'teste@teste.com', '$2b$10$Z5OAGRMoLYtZRT8Yb9n3EuNfj8tYdizhoRH7aUiuB.Tlxa4ruHoBu');
 
 INSERT INTO coffees (user_id, coffee_name, roaster, country, region, producer, variety, coffee_process, roast_level, roast_date, roaster_notes, rating, status)
 VALUES
