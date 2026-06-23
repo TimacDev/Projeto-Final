@@ -18,11 +18,11 @@ export default function Origins() {
   return (
     <div>
       <h1 className="page-title">Origins Guide</h1>
-      <p className="page-sub">Every great cup starts somewhere. Trace coffee back to its roots — from Ethiopian highlands to Sumatran lowlands.</p>
+      <p className="page-sub">Every great cup starts somewhere. Here you can find some of the most relevant countries in coffee production.</p>
 
       <div className="origins-intro">
         <div>
-          <div className="belt-stat">10 countries</div>
+          <div className="belt-stat">{counts.africa + counts.americas + counts.asia} countries</div>
           <div className="belt-stat-label">in the bean belt</div>
         </div>
         <div className="belt-key">
