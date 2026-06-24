@@ -22,7 +22,6 @@ CREATE TABLE coffees (
   roast_level ENUM('light', 'medium-light', 'medium', 'medium-dark', 'dark') DEFAULT ('medium'),
   roast_date DATE,
   roaster_notes VARCHAR(200) NOT NULL,
-  rating TINYINT CHECK (rating BETWEEN 1 AND 10),
   status BOOL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
@@ -36,6 +35,17 @@ CREATE TABLE comments (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (coffee_id) REFERENCES coffees(id) ON DELETE CASCADE
+);
+
+CREATE TABLE coffee_ratings (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  coffee_id INT NOT NULL,
+  user_id INT NOT NULL,
+  rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 10),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (coffee_id, user_id),
+  FOREIGN KEY (coffee_id) REFERENCES coffees(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE brew_logs (
@@ -62,13 +72,13 @@ VALUES
   ('User', 'teste@teste.teste.com', '$2b$10$Z5OAGRMoLYtZRT8Yb9n3EuNfj8tYdizhoRH7aUiuB.Tlxa4ruHoBu'),
   ('User2', 'teste@teste.com', '$2b$10$Z5OAGRMoLYtZRT8Yb9n3EuNfj8tYdizhoRH7aUiuB.Tlxa4ruHoBu');
 
-INSERT INTO coffees (user_id, coffee_name, roaster, country, region, producer, variety, coffee_process, roast_level, roast_date, roaster_notes, rating, status)
+INSERT INTO coffees (user_id, coffee_name, roaster, country, region, producer, variety, coffee_process, roast_level, roast_date, roaster_notes, status)
 VALUES
-  (1, 'Cerrado Sunrise',     'Torra Viva',       'Brazil',   'Cerrado Mineiro',  'Fazenda São João',     'Yellow Bourbon', 'natural',   'medium',       '2026-05-18', 'sweet, fruity, nutty',            8,  true),
-  (1, 'Yirgacheffe Bloom',   'Nordic Roast Co',  'Ethiopia', 'Yirgacheffe',      'Konga Cooperative',    'Heirloom',       'washed',    'light',        '2026-04-10', 'jasmine, bergamot, lemon zest',   9,  true),
-  (1, 'Huila Valley Dark',   'Café del Monte',   'Colombia', 'Huila',            'El Paraíso Farm',      'Castillo',       'honey',     'medium-dark',  '2026-03-22', 'chocolate, caramel, dried fruit', 6,  false),
-  (1, 'Sumatra Wet-Hulled',  'Island Beans',     'Indonesia','Aceh',             'Gayo Highlands Co-op', 'Typica',         'wet-hulled','dark',         '2026-02-15', 'earthy, cedar, dark chocolate',   7,  true),
-  (1, 'Gesha Anaerobic',     'Altitude Works',   'Panama',   'Chiriquí',         'Hacienda La Esmeralda','Gesha',          'anaerobic', 'medium-light', '2026-05-30', 'tropical fruit, wine, rose',      10, true);
+  (1, 'Cerrado Sunrise',     'Torra Viva',       'Brazil',   'Cerrado Mineiro',  'Fazenda São João',     'Yellow Bourbon', 'natural',   'medium',       '2026-05-18', 'sweet, fruity, nutty',            true),
+  (1, 'Yirgacheffe Bloom',   'Nordic Roast Co',  'Ethiopia', 'Yirgacheffe',      'Konga Cooperative',    'Heirloom',       'washed',    'light',        '2026-04-10', 'jasmine, bergamot, lemon zest',   true),
+  (1, 'Huila Valley Dark',   'Café del Monte',   'Colombia', 'Huila',            'El Paraíso Farm',      'Castillo',       'honey',     'medium-dark',  '2026-03-22', 'chocolate, caramel, dried fruit', false),
+  (1, 'Sumatra Wet-Hulled',  'Island Beans',     'Indonesia','Aceh',             'Gayo Highlands Co-op', 'Typica',         'wet-hulled','dark',         '2026-02-15', 'earthy, cedar, dark chocolate',   true),
+  (1, 'Gesha Anaerobic',     'Altitude Works',   'Panama',   'Chiriquí',         'Hacienda La Esmeralda','Gesha',          'anaerobic', 'medium-light', '2026-05-30', 'tropical fruit, wine, rose',      true);
 
 INSERT INTO brew_logs (user_id, coffee_id, brewed_at, method, dose_g, water_g, grind_setting, water_temp_c, brew_time_sec, notes, rating)
 VALUES
@@ -84,3 +94,15 @@ VALUES
   (1, 4, '2026-06-19', 'French-Press', 28, 480, 'coarse',       96, 245, 'sweet,nutty/cocoa',      7),
   (1, 5, '2026-06-21', 'Pour-Over',    20, 320, 'medium',       90, 195, 'fruity,floral',          10),
   (2, 2, '2026-06-22', 'AeroPress',    15, 200, 'fine',         87, 85,  'floral,sour/fermented',  9);
+
+INSERT INTO coffee_ratings (coffee_id, user_id, rating)
+VALUES
+  (1, 1, 8),
+  (2, 1, 9),
+  (3, 1, 6),
+  (4, 1, 7),
+  (5, 1, 10),
+  (1, 2, 7),
+  (2, 2, 9),
+  (3, 2, 5),
+  (5, 2, 8);

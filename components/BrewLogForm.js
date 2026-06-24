@@ -10,6 +10,7 @@ const EMPTY_FORM = {
   water_temp_c: "",
   brew_time_sec: "",
   notes: "",
+  rating: "",
 };
 
 export default function BrewLogForm({ coffees, methods, noteOptions, onSubmit }) {
@@ -118,6 +119,19 @@ export default function BrewLogForm({ coffees, methods, noteOptions, onSubmit })
           placeholder="e.g. 210"
           value={form.brew_time_sec}
           onChange={(e) => setForm((f) => ({ ...f, brew_time_sec: e.target.value }))}
+        />
+      </div>
+
+      <div>
+        <div className="log-field-label">Rating (1–10)</div>
+        <input
+          className="log-input"
+          type="number"
+          min="1"
+          max="10"
+          placeholder="e.g. 8"
+          value={form.rating}
+          onChange={(e) => setForm((f) => ({ ...f, rating: e.target.value }))}
         />
       </div>
 
