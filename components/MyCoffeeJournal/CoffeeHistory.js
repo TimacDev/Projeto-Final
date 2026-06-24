@@ -22,7 +22,7 @@ export default function CoffeeHistory({ coffees }) {
                 {c.roaster}
                 {c.country && ` · ${c.country}`}
                 {c.roast_level && ` · ${c.roast_level}`}
-                {c.rating && ` · ${c.rating}/10`}
+                {` · ${c.rating != null ? `${c.rating}/10 ⭐ (average of all ratings)` : "NA"}`}
               </div>
               {c.roaster_notes && (
                 <div className="log-entry-tags">

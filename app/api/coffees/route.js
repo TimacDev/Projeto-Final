@@ -1,6 +1,13 @@
 import db from '../../../lib/db';
 
 export async function GET() {
-  const [rows] = await db.query('SELECT id, coffee_name AS name, roaster, country, roast_level, roaster_notes, rating FROM coffees ORDER BY coffee_name');
+  const [rows] = await db.query(
+    `SELECT c.id, c.coffee_name AS name, c.roaster, c.country, c.roast_level, c.roaster_notes,
+            ROUND(AVG(cr.rating), 1) AS rating
+     FROM coffees c
+     LEFT JOIN coffee_ratings cr ON cr.coffee_id = c.id
+     GROUP BY c.id
+     ORDER BY c.coffee_name`
+  );
   return Response.json(rows);
 }
