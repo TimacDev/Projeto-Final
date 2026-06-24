@@ -15,12 +15,12 @@ export default function MyCoffeeJournal() {
 
   useEffect(() => {
     fetch("/api/coffees")
-      .then((r) => r.json())
+      .then((res) => { if (!res.ok) throw new Error(); return res.json(); })
       .then((data) => setCoffees(data))
-      .catch(() => {});
+      .catch(() => setErrors(["Failed to load your coffees history."]));
 
     fetch("/api/brew-logs")
-      .then((r) => r.json())
+      .then((res) => { if (!res.ok) throw new Error(); return res.json(); })
       .then((data) =>
         setEntries(
           data.map((e) => ({
@@ -31,61 +31,69 @@ export default function MyCoffeeJournal() {
           })),
         ),
       )
-      .catch(() => {});
+      .catch(() => setErrors(["Failed to load your brew logs history."]));
 
     fetch("/api/brew-logs/options")
-      .then((r) => r.json())
+      .then((res) => { if (!res.ok) throw new Error(); return res.json(); })
       .then((data) => {
         setMethods(data.method ?? []);
         setNoteOptions(data.notes ?? []);
       })
-      .catch(() => {});
+      .catch(() => setErrors(["Failed to load brew options."]));
   }, []);
 
   async function addEntry(form) {
-    const res = await fetch("/api/brew-logs", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("/api/brew-logs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    if (!res.ok) {
-      const data = await res.json();
-      setErrors(data.errors ?? ['Something went wrong.']);
-      return;
+      if (!res.ok) {
+        const data = await res.json();
+        setErrors(data.errors ?? ["Something went wrong."]);
+        return;
+      }
+
+      const coffee = coffees.find((c) => c.id === Number(form.coffee_id));
+      setEntries((prev) => [
+        {
+          ...form,
+          id: Date.now(),
+          date: form.brewed_at
+            ? new Date(form.brewed_at).toLocaleDateString()
+            : "—",
+          name: coffee?.name ?? "",
+        },
+        ...prev,
+      ]);
+      return true;
+    } catch {
+      setErrors(["Connection problem. Couldn't log a brew log. Please try again."]);
     }
-
-    const coffee = coffees.find((c) => c.id === Number(form.coffee_id));
-    setEntries((prev) => [
-      {
-        ...form,
-        id: Date.now(),
-        date: form.brewed_at
-          ? new Date(form.brewed_at).toLocaleDateString()
-          : "—",
-        name: coffee?.name ?? "",
-      },
-      ...prev,
-    ]);
-    return true;
   }
 
   async function addCoffee(form) {
-    const res = await fetch("/api/coffees", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("/api/coffees", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    if (!res.ok) {
+      if (!res.ok) {
+        const data = await res.json();
+        setErrors(data.errors ?? ["Something went wrong."]);
+        return;
+      }
+
       const data = await res.json();
-      setErrors(data.errors ?? ['Something went wrong.']);
-      return;
+      setCoffees((prev) => [...prev, data]);
+      return true;
+    } catch {
+      setErrors(["Connection problem. Couldn't log a coffee. Please try again."]);
     }
-
-    const data = await res.json();
-    setCoffees((prev) => [...prev, data]);
-    return true;
   }
 
   return (
