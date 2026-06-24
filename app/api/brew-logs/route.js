@@ -1,5 +1,6 @@
 import db from '../../../lib/db';
 import { getCurrentUser } from '../../../lib/auth';
+import { validateBrewLog } from '../../../lib/validators';
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -23,16 +24,15 @@ export async function POST(request) {
 
   const body = await request.json();
 
-  const { coffee_id, brewed_at, method, dose_g, water_g, grind_setting, water_temp_c, brew_time_sec, notes } = body;
+  const errors = validateBrewLog(body);
+  if (errors.length) return Response.json({ errors }, { status: 400 });
 
-  if (!coffee_id) {
-    return Response.json({ error: 'coffee_id is required' }, { status: 400 });
-  }
+  const { coffee_id, brewed_at, method, dose_g, water_g, grind_setting, water_temp_c, brew_time_sec, notes, rating } = body;
 
   const [result] = await db.query(
-    `INSERT INTO brew_logs (user_id, coffee_id, brewed_at, method, dose_g, water_g, grind_setting, water_temp_c, brew_time_sec, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [user.id, coffee_id, brewed_at || null, method || null, dose_g || null, water_g || null, grind_setting || null, water_temp_c || null, brew_time_sec || null, notes || null]
+    `INSERT INTO brew_logs (user_id, coffee_id, brewed_at, method, dose_g, water_g, grind_setting, water_temp_c, brew_time_sec, notes, rating)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [user.id, coffee_id, brewed_at || null, method || null, dose_g || null, water_g || null, grind_setting || null, water_temp_c || null, brew_time_sec || null, notes || null, rating || null]
   );
 
   return Response.json({ id: result.insertId }, { status: 201 });

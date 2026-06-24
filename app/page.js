@@ -74,7 +74,7 @@ export default function App() {
           <p className="landing-sub">
             Discover the world of coffee — from origin to cup. Explore brew methods, find your flavor profile, and log every cup along the way.
           </p>
-          <button className="landing-btn" onClick={() => setLandingUp(true)}>Enter the guide</button>
+          <button className="landing-btn" onClick={() => { new Audio('/pouring-a-cup-of-coffee.wav').play(); setLandingUp(true); }}>Enter the guide</button>
           <div className="landing-footer">Est. 2026 — For coffee aficionados in training</div>
         </div>
 

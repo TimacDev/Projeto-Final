@@ -3,6 +3,7 @@ import BrewLogForm from "./BrewLogForm";
 import CoffeeForm from "./CoffeeForm";
 import BrewHistory from "./BrewHistory";
 import CoffeeHistory from "./CoffeeHistory";
+import ErrorMessage from "../ErrorMessage";
 
 export default function MyCoffeeJournal() {
   const [entries, setEntries] = useState([]);
@@ -10,6 +11,7 @@ export default function MyCoffeeJournal() {
   const [methods, setMethods] = useState([]);
   const [noteOptions, setNoteOptions] = useState([]);
   const [activeForm, setActiveForm] = useState("brew");
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     fetch("/api/coffees")
@@ -47,7 +49,11 @@ export default function MyCoffeeJournal() {
       body: JSON.stringify(form),
     });
 
-    if (!res.ok) return;
+    if (!res.ok) {
+      const data = await res.json();
+      setErrors(data.errors ?? ['Something went wrong.']);
+      return;
+    }
 
     const coffee = coffees.find((c) => c.id === Number(form.coffee_id));
     setEntries((prev) => [
@@ -61,6 +67,7 @@ export default function MyCoffeeJournal() {
       },
       ...prev,
     ]);
+    return true;
   }
 
   async function addCoffee(form) {
@@ -70,13 +77,19 @@ export default function MyCoffeeJournal() {
       body: JSON.stringify(form),
     });
 
-    if (!res.ok) return;
+    if (!res.ok) {
+      const data = await res.json();
+      setErrors(data.errors ?? ['Something went wrong.']);
+      return;
+    }
 
     const data = await res.json();
     setCoffees((prev) => [...prev, data]);
+    return true;
   }
 
   return (
+    <>
     <div>
       <h1 className="page-title">📓 My Coffee Journal</h1>
       <p className="page-sub">
@@ -118,5 +131,7 @@ export default function MyCoffeeJournal() {
         </div>
       </div>
     </div>
+      <ErrorMessage messages={errors} onDismiss={() => setErrors([])} />
+    </>
   );
 }

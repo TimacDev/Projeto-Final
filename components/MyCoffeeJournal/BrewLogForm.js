@@ -16,11 +16,11 @@ const EMPTY_FORM = {
 export default function BrewLogForm({ coffees, methods, noteOptions, onSubmit }) {
   const [form, setForm] = useState(EMPTY_FORM);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!form.coffee_id) return;
-    onSubmit(form);
-    setForm(EMPTY_FORM);
+    const ok = await onSubmit(form);
+    if (ok) setForm(EMPTY_FORM);
   }
 
   return (

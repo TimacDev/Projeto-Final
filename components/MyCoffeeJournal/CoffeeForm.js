@@ -19,10 +19,10 @@ const EMPTY_FORM = {
 export default function CoffeeForm({ onSubmit }) {
   const [form, setForm] = useState(EMPTY_FORM);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    onSubmit(form);
-    setForm(EMPTY_FORM);
+    const ok = await onSubmit(form);
+    if (ok) setForm(EMPTY_FORM);
   }
 
   return (
