@@ -1,9 +1,9 @@
 // Shared because both BrewGuide (instructions) and MyLog (dropdown options) need the same list of methods.
 
 export const BREW_METHODS = [
-  { id:'pourover', name:'Pour-Over', icon:'☕', time:'3–4 min', ratio:'1:15', difficulty:'Medium',
+  { id:'pourover', name:'Pour-Over', icon:'☕', time:'2–3 min', ratio:'1:15', difficulty:'Medium',
     steps:[
-      'Boil water and let it cool to 93°C (just off boil).',
+      'Boil water somewhere between 90–93°C (experiment with different temperatures).',
       'Place a paper filter in the dripper and rinse it with hot water — this removes papery taste.',
       'Grind coffee to a medium-fine consistency (like table salt).',
       'Add grounds and create a small well in the center.',
@@ -15,9 +15,9 @@ export const BREW_METHODS = [
     steps:[
       'Grind coffee very fine — finer than table salt, almost like flour.',
       'Dose 18–20g of ground coffee into the portafilter basket.',
-      'Tamp the grounds firmly and evenly with about 15kg of pressure.',
+      'Tamp the grounds firmly and evenly.',
       'Lock the portafilter into the machine and start the shot immediately.',
-      'A good shot runs 25–30 seconds and produces 36–40ml of espresso.',
+      'A good shot runs around 25–30 seconds and produces 36–40ml of espresso (twice the volume of the coffee input).',
       'Look for a golden-brown crema on top — sign of a well-extracted shot.',
       'If too fast: grind finer. If too slow: grind coarser.',
     ] },
