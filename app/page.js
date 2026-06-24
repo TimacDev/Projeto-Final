@@ -11,7 +11,7 @@ import HardwareGuide from '../components/HardwareGuide';
 import RoastGuide from '../components/RoastGuide';
 import TasteQuiz from '../components/TasteQuiz';
 import ChatBot from '../components/ChatBot';
-import MyCoffeeJournal from '../components/MyCoffeeJournal';
+import MyCoffeeJournal from '../components/MyCoffeeJournal/MyCoffeeJournal';
 
 // Top nav structure — three themed groups + the personal tools group on the right.
 const GUIDE_GROUPS = [
