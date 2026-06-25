@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EMPTY_FORM = {
   coffee_id: "",
@@ -13,8 +13,35 @@ const EMPTY_FORM = {
   rating: "",
 };
 
-export default function BrewLogForm({ coffees, methods, noteOptions, onSubmit }) {
+// `<input type="date">` needs a YYYY-MM-DD value; DB rows come back as datetimes.
+function toDateInput(value) {
+  if (!value) return "";
+  const str = String(value);
+  return str.length >= 10 ? str.slice(0, 10) : str;
+}
+
+function entryToForm(entry) {
+  const form = { ...EMPTY_FORM };
+  for (const key of Object.keys(EMPTY_FORM)) {
+    if (entry[key] !== undefined && entry[key] !== null) form[key] = String(entry[key]);
+  }
+  form.brewed_at = toDateInput(entry.brewed_at);
+  return form;
+}
+
+export default function BrewLogForm({
+  coffees,
+  methods,
+  noteOptions,
+  onSubmit,
+  editEntry,
+  onCancelEdit,
+}) {
   const [form, setForm] = useState(EMPTY_FORM);
+
+  useEffect(() => {
+    setForm(editEntry ? entryToForm(editEntry) : EMPTY_FORM);
+  }, [editEntry]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -161,9 +188,16 @@ export default function BrewLogForm({ coffees, methods, noteOptions, onSubmit })
         </div>
       </div>
 
-      <button className="btn primary" type="submit">
-        Add cup
-      </button>
+      <div className="log-form-actions">
+        <button className="btn primary" type="submit">
+          {editEntry ? "Update cup" : "Add cup"}
+        </button>
+        {editEntry && (
+          <button className="btn" type="button" onClick={onCancelEdit}>
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 }

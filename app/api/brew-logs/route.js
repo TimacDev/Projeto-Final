@@ -7,7 +7,8 @@ export async function GET() {
   if (!user) return Response.json({ error: 'Not authenticated' }, { status: 401 });
 
   const [rows] = await db.query(
-    `SELECT bl.id, bl.brewed_at, bl.method, bl.dose_g, bl.water_temp_c, bl.notes,
+    `SELECT bl.id, bl.coffee_id, bl.brewed_at, bl.method, bl.dose_g, bl.water_g,
+            bl.grind_setting, bl.water_temp_c, bl.brew_time_sec, bl.notes, bl.rating,
             c.coffee_name AS name
      FROM brew_logs bl
      JOIN coffees c ON c.id = bl.coffee_id

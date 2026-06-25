@@ -11,6 +11,7 @@ export default function MyCoffeeJournal() {
   const [methods, setMethods] = useState([]);
   const [noteOptions, setNoteOptions] = useState([]);
   const [activeForm, setActiveForm] = useState("brew");
+  const [editing, setEditing] = useState(null);
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
@@ -74,6 +75,66 @@ export default function MyCoffeeJournal() {
     }
   }
 
+  async function updateEntry(form) {
+    try {
+      const res = await fetch(`/api/brew-logs/${editing.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setErrors(data.errors ?? ["Something went wrong."]);
+        return;
+      }
+
+      const coffee = coffees.find((c) => c.id === Number(form.coffee_id));
+      setEntries((prev) =>
+        prev.map((e) =>
+          e.id === editing.id
+            ? {
+                ...e,
+                ...form,
+                date: form.brewed_at
+                  ? new Date(form.brewed_at).toLocaleDateString()
+                  : "—",
+                name: coffee?.name ?? e.name,
+              }
+            : e,
+        ),
+      );
+      setEditing(null);
+      return true;
+    } catch {
+      setErrors(["Connection problem. Couldn't update the brew log. Please try again."]);
+    }
+  }
+
+  async function deleteEntry(entry) {
+    try {
+      const res = await fetch(`/api/brew-logs/${entry.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setErrors(data.errors ?? ["Something went wrong."]);
+        return;
+      }
+
+      setEntries((prev) => prev.filter((e) => e.id !== entry.id));
+      if (editing?.id === entry.id) setEditing(null);
+    } catch {
+      setErrors(["Connection problem. Couldn't delete the brew log. Please try again."]);
+    }
+  }
+
+  function startEdit(entry) {
+    setEditing(entry);
+    setActiveForm("brew");
+  }
+
   async function addCoffee(form) {
     try {
       const res = await fetch("/api/coffees", {
@@ -124,7 +185,9 @@ export default function MyCoffeeJournal() {
               coffees={coffees}
               methods={methods}
               noteOptions={noteOptions}
-              onSubmit={addEntry}
+              onSubmit={editing ? updateEntry : addEntry}
+              editEntry={editing}
+              onCancelEdit={() => setEditing(null)}
             />
           ) : (
             <CoffeeForm onSubmit={addCoffee} />
@@ -132,7 +195,11 @@ export default function MyCoffeeJournal() {
         </div>
         <div>
           {activeForm === "brew" ? (
-            <BrewHistory entries={entries} />
+            <BrewHistory
+              entries={entries}
+              onEdit={startEdit}
+              onDelete={deleteEntry}
+            />
           ) : (
             <CoffeeHistory coffees={coffees} />
           )}

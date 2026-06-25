@@ -19,8 +19,16 @@
   background: #faf8f3; color: #1a1208;
 }
 .log-notes { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 4px; }
+.log-form-actions { display: flex; gap: 10px; }
 .log-note-option { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-.log-entry { border: 2px solid #1a1208; border-radius: 8px; background: #faf8f3; padding: 12px 16px; box-shadow: 3px 3px 0 #ddd0bb; }
+.log-entry { border: 2px solid #1a1208; border-radius: 8px; background: #faf8f3; padding: 12px 16px; box-shadow: 3px 3px 0 #ddd0bb; cursor: pointer; }
+.log-entry:hover { background: #f3eee1; }
+
+/* ── Brew entry modal ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(26, 18, 8, 0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
+.modal { position: relative; width: 100%; max-width: 420px; border: 2px solid #1a1208; border-radius: 8px; background: #faf8f3; padding: 24px; box-shadow: 5px 5px 0 #ddd0bb; }
+.modal-close { position: absolute; top: 10px; right: 12px; border: none; background: none; font-size: 24px; line-height: 1; cursor: pointer; color: #1a1208; padding: 0; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
 .log-entry-title { font-size: 17px; font-weight: 700; }
 .log-entry-meta { font-size: 13px; color: #9c845f; margin-top: 2px; }
 .log-entry-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
