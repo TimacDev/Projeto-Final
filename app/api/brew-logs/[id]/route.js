@@ -22,7 +22,16 @@ export async function PUT(request, { params }) {
     [coffee_id, brewed_at || null, method || null, dose_g || null, water_g || null, grind_setting || null, water_temp_c || null, brew_time_sec || null, notes || null, rating || null, id, user.id]
   );
 
-  if (result.affectedRows === 0) return Response.json({ error: 'Not found' }, { status: 404 });
+  // mysql2 reports affectedRows as the number of rows *changed*, not matched, so a
+  // save with identical values yields 0. Only treat it as missing when the row truly
+  // doesn't exist for this user; an unchanged row is still a successful update.
+  if (result.affectedRows === 0) {
+    const [[row]] = await db.query(
+      `SELECT id FROM brew_logs WHERE id = ? AND user_id = ?`,
+      [id, user.id]
+    );
+    if (!row) return Response.json({ error: 'Not found' }, { status: 404 });
+  }
 
   return Response.json({ id: Number(id) });
 }

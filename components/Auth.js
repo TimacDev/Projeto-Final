@@ -26,7 +26,12 @@ export default function Auth({ onAuthed }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Something went wrong. Please try again.');
+        setError(
+          data.error ||
+            (isSignup
+              ? "Couldn't create your account. Please try again."
+              : "Couldn't log you in. Please check your details and try again."),
+        );
         return;
       }
       onAuthed(data.user);

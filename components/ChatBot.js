@@ -57,7 +57,7 @@ export default function ChatBot({ visible = true }) {
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "bot", text: "Sorry, something went wrong. Try again." },
+        { role: "bot", text: "Sorry, I couldn't reach Mr. Beanie right now. Please try again." },
       ]);
     } finally {
       setSending(false);

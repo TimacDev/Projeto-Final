@@ -52,15 +52,16 @@ export default function MyCoffeeJournal() {
 
       if (!res.ok) {
         const data = await res.json();
-        setErrors(data.errors ?? ["Something went wrong."]);
+        setErrors(data.errors ?? ["Couldn't save your brew log. Please check your entries and try again."]);
         return;
       }
 
+      const { id } = await res.json();
       const coffee = coffees.find((c) => c.id === Number(form.coffee_id));
       setEntries((prev) => [
         {
           ...form,
-          id: Date.now(),
+          id,
           date: form.brewed_at
             ? new Date(form.brewed_at).toLocaleDateString()
             : "—",
@@ -84,7 +85,7 @@ export default function MyCoffeeJournal() {
 
       if (!res.ok) {
         const data = await res.json();
-        setErrors(data.errors ?? ["Something went wrong."]);
+        setErrors(data.errors ?? ["Couldn't update your brew log. Please check your entries and try again."]);
         return;
       }
 
@@ -117,7 +118,7 @@ export default function MyCoffeeJournal() {
 
       if (!res.ok) {
         const data = await res.json();
-        setErrors(data.errors ?? ["Something went wrong."]);
+        setErrors(data.errors ?? ["Couldn't delete your brew log. Please try again."]);
         return;
       }
 
@@ -137,7 +138,7 @@ export default function MyCoffeeJournal() {
 
       if (!res.ok) {
         const data = await res.json();
-        setErrors(data.errors ?? ["Something went wrong."]);
+        setErrors(data.errors ?? ["Couldn't save your coffee. Please check your entries and try again."]);
         return;
       }
 
