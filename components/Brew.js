@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BREW_METHODS } from '../data/brewMethods';
 
-export default function BrewGuide() {
+export default function Brew() {
   const [method, setMethod] = useState(BREW_METHODS[0]);
   const [step, setStep] = useState(0);
 

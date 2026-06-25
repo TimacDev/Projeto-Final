@@ -54,7 +54,7 @@ const PROCESSING_METHODS = [
     origins:['Colombia','Costa Rica','Panama','Ethiopia (experimental)'] },
 ];
 
-export default function ProcessingGuide() {
+export default function Processing() {
   const [selected, setSelected] = useState(PROCESSING_METHODS[0]);
 
   return (

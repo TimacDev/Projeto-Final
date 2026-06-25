@@ -16,7 +16,7 @@ const WATER_SOURCES = [
   { name:'Remineralized Reverse Osmosis',   score:5, note:'Distilled + measured mineral packets. Repeatable, ideal — and a hassle.' },
 ];
 
-export default function WaterGuide() {
+export default function Water() {
   return (
     <div>
       <h1 className="page-title">💧 Water</h1>

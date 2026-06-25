@@ -1,10 +1,15 @@
-export default function CoffeeHistory({ coffees }) {
+import { useState } from "react";
+import CoffeeModal from "./CoffeeModal";
+
+export default function CoffeeCollection({ coffees, onRated, onError }) {
+  const [selected, setSelected] = useState(null);
+
   return (
     <div>
-      <div className="log-history-title">
+      <div className="log-collection-title">
         Coffee collection{" "}
         {coffees.length > 0 && (
-          <span className="log-history-count">({coffees.length} coffees)</span>
+          <span className="log-collection-count">({coffees.length} coffees)</span>
         )}
       </div>
       {coffees.length === 0 ? (
@@ -14,9 +19,21 @@ export default function CoffeeHistory({ coffees }) {
           Add your first one →
         </div>
       ) : (
-        <div className="log-history">
+        <div className="log-collection">
           {coffees.map((c) => (
-            <div key={c.id} className="log-entry">
+            <div
+              key={c.id}
+              className="log-entry"
+              role="button"
+              tabIndex={0}
+              onClick={() => setSelected(c)}
+              onKeyDown={(ev) => {
+                if (ev.key === "Enter" || ev.key === " ") {
+                  ev.preventDefault();
+                  setSelected(c);
+                }
+              }}
+            >
               <div className="log-entry-title">{c.name}</div>
               <div className="log-entry-meta">
                 {c.roaster}
@@ -40,6 +57,15 @@ export default function CoffeeHistory({ coffees }) {
             </div>
           ))}
         </div>
+      )}
+
+      {selected && (
+        <CoffeeModal
+          coffee={selected}
+          onClose={() => setSelected(null)}
+          onRated={onRated}
+          onError={onError}
+        />
       )}
     </div>
   );

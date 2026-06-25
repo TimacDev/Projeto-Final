@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import BrewLogForm from "./BrewLogForm";
 import CoffeeForm from "./CoffeeForm";
-import BrewHistory from "./BrewHistory";
-import CoffeeHistory from "./CoffeeHistory";
+import BrewCollection from "./BrewCollection";
+import CoffeeCollection from "./CoffeeCollection";
 import ErrorMessage from "../ErrorMessage";
 
 export default function MyCoffeeJournal() {
@@ -150,6 +150,12 @@ export default function MyCoffeeJournal() {
     }
   }
 
+  function updateCoffeeRating(id, avg) {
+    setCoffees((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, rating: avg } : c)),
+    );
+  }
+
   return (
     <>
     <div>
@@ -186,7 +192,7 @@ export default function MyCoffeeJournal() {
         </div>
         <div>
           {activeForm === "brew" ? (
-            <BrewHistory
+            <BrewCollection
               entries={entries}
               coffees={coffees}
               methods={methods}
@@ -195,7 +201,11 @@ export default function MyCoffeeJournal() {
               onDelete={deleteEntry}
             />
           ) : (
-            <CoffeeHistory coffees={coffees} />
+            <CoffeeCollection
+              coffees={coffees}
+              onRated={updateCoffeeRating}
+              onError={setErrors}
+            />
           )}
         </div>
       </div>

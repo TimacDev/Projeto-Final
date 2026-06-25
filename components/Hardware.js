@@ -12,7 +12,7 @@ const HW_KIT = [
   { icon:'🌡️', name:'Thermometer',        why:'Or just boil and rest 30 seconds — that lands you at ~93°C.', price:'$10' },
 ];
 
-export default function HardwareGuide() {
+export default function Hardware() {
   return (
     <div>
       <h1 className="page-title">⚙️ Hardware</h1>

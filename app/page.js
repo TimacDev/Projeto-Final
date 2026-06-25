@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import Auth from '../components/Auth';
 import History from '../components/History';
 import Origins from '../components/Origins';
-import ProcessingGuide from '../components/ProcessingGuide';
-import BrewGuide from '../components/BrewGuide';
-import WaterGuide from '../components/WaterGuide';
-import HardwareGuide from '../components/HardwareGuide';
-import RoastGuide from '../components/RoastGuide';
+import Processing from '../components/Processing';
+import Brew from '../components/Brew';
+import Water from '../components/Water';
+import Hardware from '../components/Hardware';
+import Roast from '../components/Roast';
 import TasteQuiz from '../components/TasteQuiz';
 import ChatBot from '../components/ChatBot';
 import MyCoffeeJournal from '../components/MyCoffeeJournal/MyCoffeeJournal';
@@ -51,11 +51,11 @@ export default function App() {
     switch (tab) {
       case 'history':    return <History goTab={setTab}/>;
       case 'origins':    return <Origins/>;
-      case 'processing': return <ProcessingGuide/>;
-      case 'brew':       return <BrewGuide/>;
-      case 'water':      return <WaterGuide/>;
-      case 'hardware':   return <HardwareGuide/>;
-      case 'roast':      return <RoastGuide/>;
+      case 'processing': return <Processing/>;
+      case 'brew':       return <Brew/>;
+      case 'water':      return <Water/>;
+      case 'hardware':   return <Hardware/>;
+      case 'roast':      return <Roast/>;
       case 'quiz':       return <TasteQuiz/>;
       // The journal is the only gated tab: show it when logged in, otherwise the
       // login/signup form. `null` while we're still checking avoids a flash.

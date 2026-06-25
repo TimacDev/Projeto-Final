@@ -1,4 +1,4 @@
-// Shared 5-dot rating used by Origins and ProcessingGuide.
+// Shared 5-dot rating used by Origins and Processing.
 export default function TasteDots({ value }) {
   return (
     <div className="taste-dots">

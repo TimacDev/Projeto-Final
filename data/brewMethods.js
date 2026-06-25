@@ -1,4 +1,4 @@
-// Shared because both BrewGuide (instructions) and MyLog (dropdown options) need the same list of methods.
+// Shared because both Brew (instructions) and MyLog (dropdown options) need the same list of methods.
 
 export const BREW_METHODS = [
   { id:'pourover', name:'Pour-Over', icon:'☕', time:'2–3 min', ratio:'1:15', difficulty:'Medium',

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import BrewLogForm from "./BrewLogForm";
 
-export default function BrewHistory({
+export default function BrewCollection({
   entries,
   coffees,
   methods,
@@ -31,10 +31,10 @@ export default function BrewHistory({
 
   return (
     <div>
-      <div className="log-history-title">
-        Brew history{" "}
+      <div className="log-collection-title">
+        Brew collection{" "}
         {entries.length > 0 && (
-          <span className="log-history-count">({entries.length} cups)</span>
+          <span className="log-collection-count">({entries.length} cups)</span>
         )}
       </div>
       {entries.length === 0 ? (
@@ -44,7 +44,7 @@ export default function BrewHistory({
           Add your first one →
         </div>
       ) : (
-        <div className="log-history">
+        <div className="log-collection">
           {entries.map((e) => (
             <div
               key={e.id}

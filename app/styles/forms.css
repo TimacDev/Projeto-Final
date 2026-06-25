@@ -31,9 +31,26 @@
 .log-form-modal { padding: 0; gap: 10px; }
 .modal-close { position: absolute; top: 10px; right: 12px; border: none; background: none; font-size: 24px; line-height: 1; cursor: pointer; color: #1a1208; padding: 0; }
 .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+/* ── Coffee detail modal: rating + comments ── */
+.modal-section-title { font-size: 15px; font-weight: 700; margin-top: 16px; }
+.modal-section-label { font-size: 13px; font-weight: 600; color: #7a6245; margin-top: 16px; margin-bottom: 6px; }
+.coffee-rating { display: flex; flex-wrap: wrap; gap: 6px; }
+.coffee-rating-btn { width: 32px; height: 32px; border: 1px solid #1a1208; border-radius: 6px; background: #faf8f3; color: #1a1208; font-family: var(--font-body); font-size: 14px; cursor: pointer; }
+.coffee-rating-btn:hover { background: #ede5d4; }
+.coffee-rating-btn.selected { background: #1a1208; color: #faf8f3; }
+.comment-form { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.comment-form .btn { flex-shrink: 0; }
+.comment-list { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+.comment { border: 1px solid #e5dac4; border-radius: 8px; background: #fffdf8; padding: 8px 12px; }
+.comment-head { display: flex; align-items: center; gap: 8px; }
+.comment-author { font-size: 13px; font-weight: 700; }
+.comment-date { font-size: 12px; color: #9c845f; }
+.comment-delete { margin-left: auto; border: none; background: none; font-size: 18px; line-height: 1; cursor: pointer; color: #b3402e; padding: 0; }
+.comment-body { font-size: 14px; color: #1a1208; margin-top: 4px; white-space: pre-wrap; }
 .log-entry-title { font-size: 17px; font-weight: 700; }
 .log-entry-meta { font-size: 13px; color: #9c845f; margin-top: 2px; }
 .log-entry-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-.log-history { display: flex; flex-direction: column; gap: 10px; }
-.log-history-title { font-family: var(--font-display); font-style: italic; font-size: 22px; margin-bottom: 14px; letter-spacing: -0.01em; }
-.log-history-count { font-size: 15px; color: #9c845f; }
+.log-collection { display: flex; flex-direction: column; gap: 10px; }
+.log-collection-title { font-family: var(--font-display); font-style: italic; font-size: 22px; margin-bottom: 14px; letter-spacing: -0.01em; }
+.log-collection-count { font-size: 15px; color: #9c845f; }

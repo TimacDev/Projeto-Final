@@ -7,7 +7,7 @@ const ROAST_DATA = [
   { name:'Dark 🌑', temp:'230°C+', acidity:'Very Low', body:'Heavy', flavor:['Bitter','Smoky','Burnt caramel','Spicy'], notes:'Intense and polarizing. Origin character is almost entirely replaced by roast flavor. Low caffeine relative to weight.', beans:'Italian espresso blends, French roast, Chicory blend' },
 ];
 
-export default function RoastGuide() {
+export default function Roast() {
   const [level, setLevel] = useState(1);
   const r = ROAST_DATA[level];
 
