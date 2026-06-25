@@ -11,7 +11,6 @@ export default function MyCoffeeJournal() {
   const [methods, setMethods] = useState([]);
   const [noteOptions, setNoteOptions] = useState([]);
   const [activeForm, setActiveForm] = useState("brew");
-  const [editing, setEditing] = useState(null);
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
@@ -75,9 +74,9 @@ export default function MyCoffeeJournal() {
     }
   }
 
-  async function updateEntry(form) {
+  async function updateEntry(id, form) {
     try {
-      const res = await fetch(`/api/brew-logs/${editing.id}`, {
+      const res = await fetch(`/api/brew-logs/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -92,7 +91,7 @@ export default function MyCoffeeJournal() {
       const coffee = coffees.find((c) => c.id === Number(form.coffee_id));
       setEntries((prev) =>
         prev.map((e) =>
-          e.id === editing.id
+          e.id === id
             ? {
                 ...e,
                 ...form,
@@ -104,7 +103,6 @@ export default function MyCoffeeJournal() {
             : e,
         ),
       );
-      setEditing(null);
       return true;
     } catch {
       setErrors(["Connection problem. Couldn't update the brew log. Please try again."]);
@@ -124,15 +122,9 @@ export default function MyCoffeeJournal() {
       }
 
       setEntries((prev) => prev.filter((e) => e.id !== entry.id));
-      if (editing?.id === entry.id) setEditing(null);
     } catch {
       setErrors(["Connection problem. Couldn't delete the brew log. Please try again."]);
     }
-  }
-
-  function startEdit(entry) {
-    setEditing(entry);
-    setActiveForm("brew");
   }
 
   async function addCoffee(form) {
@@ -185,9 +177,7 @@ export default function MyCoffeeJournal() {
               coffees={coffees}
               methods={methods}
               noteOptions={noteOptions}
-              onSubmit={editing ? updateEntry : addEntry}
-              editEntry={editing}
-              onCancelEdit={() => setEditing(null)}
+              onSubmit={addEntry}
             />
           ) : (
             <CoffeeForm onSubmit={addCoffee} />
@@ -197,7 +187,10 @@ export default function MyCoffeeJournal() {
           {activeForm === "brew" ? (
             <BrewHistory
               entries={entries}
-              onEdit={startEdit}
+              coffees={coffees}
+              methods={methods}
+              noteOptions={noteOptions}
+              onUpdate={updateEntry}
               onDelete={deleteEntry}
             />
           ) : (

@@ -36,6 +36,7 @@ export default function BrewLogForm({
   onSubmit,
   editEntry,
   onCancelEdit,
+  variant,
 }) {
   const [form, setForm] = useState(EMPTY_FORM);
 
@@ -51,7 +52,10 @@ export default function BrewLogForm({
   }
 
   return (
-    <form className="sk-box log-form" onSubmit={handleSubmit}>
+    <form
+      className={`log-form ${variant === "modal" ? "log-form-modal" : "sk-box"}`}
+      onSubmit={handleSubmit}
+    >
 
       <div>
         <div className="log-field-label">Coffee name</div>

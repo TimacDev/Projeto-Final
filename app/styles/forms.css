@@ -26,7 +26,8 @@
 
 /* ── Brew entry modal ── */
 .modal-overlay { position: fixed; inset: 0; background: rgba(26, 18, 8, 0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
-.modal { position: relative; width: 100%; max-width: 420px; border: 2px solid #1a1208; border-radius: 8px; background: #faf8f3; padding: 24px; box-shadow: 5px 5px 0 #ddd0bb; }
+.modal { position: relative; width: 100%; max-width: 420px; max-height: 85vh; overflow-y: auto; border: 2px solid #1a1208; border-radius: 8px; background: #faf8f3; padding: 24px; box-shadow: 5px 5px 0 #ddd0bb; }
+.log-form-modal { padding: 0; gap: 10px; }
 .modal-close { position: absolute; top: 10px; right: 12px; border: none; background: none; font-size: 24px; line-height: 1; cursor: pointer; color: #1a1208; padding: 0; }
 .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
 .log-entry-title { font-size: 17px; font-weight: 700; }

@@ -1,11 +1,32 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import BrewLogForm from "./BrewLogForm";
 
-export default function BrewHistory({ entries, onEdit, onDelete }) {
+export default function BrewHistory({
+  entries,
+  coffees,
+  methods,
+  noteOptions,
+  onUpdate,
+  onDelete,
+}) {
   const [selected, setSelected] = useState(null);
+  const [mode, setMode] = useState("view");
+
+  function openEntry(entry) {
+    setSelected(entry);
+    setMode("view");
+  }
 
   function closeModal() {
     setSelected(null);
+    setMode("view");
+  }
+
+  async function handleUpdate(form) {
+    const ok = await onUpdate(selected.id, form);
+    if (ok) closeModal();
+    return ok;
   }
 
   return (
@@ -30,11 +51,11 @@ export default function BrewHistory({ entries, onEdit, onDelete }) {
               className="log-entry"
               role="button"
               tabIndex={0}
-              onClick={() => setSelected(e)}
+              onClick={() => openEntry(e)}
               onKeyDown={(ev) => {
                 if (ev.key === "Enter" || ev.key === " ") {
                   ev.preventDefault();
-                  setSelected(e);
+                  openEntry(e);
                 }
               }}
             >
@@ -81,46 +102,57 @@ export default function BrewHistory({ entries, onEdit, onDelete }) {
               ×
             </button>
             <div className="log-entry-title">{selected.name}</div>
-            <div className="log-entry-meta">
-              {selected.date}
-              {selected.method && ` · ${selected.method}`}
-              {selected.dose_g && ` · ${selected.dose_g}g`}
-              {selected.water_temp_c && ` · ${selected.water_temp_c}°C`}
-              {selected.rating && ` · ${selected.rating}/10`}
-            </div>
-            {selected.notes && (
-              <div className="log-entry-tags">
-                {selected.notes
-                  .split(",")
-                  .map((t) => t.trim())
-                  .filter(Boolean)
-                  .map((t) => (
-                    <span key={t} className="tag">
-                      {t}
-                    </span>
-                  ))}
-              </div>
+            {mode === "view" ? (
+              <>
+                <div className="log-entry-meta">
+                  {selected.date}
+                  {selected.method && ` · ${selected.method}`}
+                  {selected.dose_g && ` · ${selected.dose_g}g`}
+                  {selected.water_temp_c && ` · ${selected.water_temp_c}°C`}
+                  {selected.rating && ` · ${selected.rating}/10`}
+                </div>
+                {selected.notes && (
+                  <div className="log-entry-tags">
+                    {selected.notes
+                      .split(",")
+                      .map((t) => t.trim())
+                      .filter(Boolean)
+                      .map((t) => (
+                        <span key={t} className="tag">
+                          {t}
+                        </span>
+                      ))}
+                  </div>
+                )}
+                <div className="modal-actions">
+                  <button
+                    className="btn primary"
+                    onClick={() => setMode("edit")}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn danger"
+                    onClick={() => {
+                      onDelete?.(selected);
+                      closeModal();
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </>
+            ) : (
+              <BrewLogForm
+                variant="modal"
+                editEntry={selected}
+                coffees={coffees}
+                methods={methods}
+                noteOptions={noteOptions}
+                onSubmit={handleUpdate}
+                onCancelEdit={() => setMode("view")}
+              />
             )}
-            <div className="modal-actions">
-              <button
-                className="btn primary"
-                onClick={() => {
-                  onEdit?.(selected);
-                  closeModal();
-                }}
-              >
-                Edit
-              </button>
-              <button
-                className="btn danger"
-                onClick={() => {
-                  onDelete?.(selected);
-                  closeModal();
-                }}
-              >
-                Delete
-              </button>
-            </div>
           </div>
         </div>,
         document.body,
