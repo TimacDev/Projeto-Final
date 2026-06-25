@@ -33,7 +33,7 @@ export default function App() {
   // On load, ask the server who we are (via the session cookie) so a refresh
   // keeps you logged in. authChecked avoids flashing the login form first.
   useEffect(() => {
-    fetch('/api/auth/me')
+    fetch('/api/auth/user')
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => setUser(data?.user ?? null))
       .catch(() => setUser(null))

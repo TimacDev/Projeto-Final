@@ -2,12 +2,12 @@ import { useEffect } from "react";
 
 export default function ErrorMessage({ messages, onDismiss }) {
   useEffect(() => {
-    if (!messages.length) return;
+    if (messages.length === 0) return;
     const t = setTimeout(onDismiss, 4000);
     return () => clearTimeout(t);
   }, [messages]);
 
-  if (!messages.length) return null;
+  if (messages.length === 0) return null;
 
   return (
     <div className="toast">

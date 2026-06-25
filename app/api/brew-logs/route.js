@@ -1,6 +1,6 @@
 import db from '../../../lib/db';
 import { getCurrentUser } from '../../../lib/auth';
-import { validateBrewLog } from '../../../lib/validators';
+import { validateBrewLog } from '../../../lib/formValidation';
 
 export async function GET() {
   const user = await getCurrentUser();
