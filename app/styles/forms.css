@@ -10,6 +10,7 @@
 
 /* ── My Coffee Journal ── */
 .log-layout { display: grid; grid-template-columns: 340px 1fr; gap: 28px; align-items: start; }
+.log-form-toggle { display: flex; gap: 10px; margin-bottom: 16px; }
 .log-form { display: flex; flex-direction: column; gap: 12px; padding: 20px; }
 .log-form-title { font-family: var(--font-display); font-style: italic; font-size: 22px; margin-bottom: 4px; letter-spacing: -0.01em; }
 .log-field-label { font-size: 14px; font-weight: 600; margin-bottom: 4px; }

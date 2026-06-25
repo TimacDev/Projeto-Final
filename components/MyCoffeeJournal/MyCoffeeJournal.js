@@ -160,16 +160,16 @@ export default function MyCoffeeJournal() {
         <div>
           <div className="log-form-toggle">
             <button
-              className={`btn${activeForm === "brew" ? " primary" : ""}`}
-              onClick={() => setActiveForm("brew")}
-            >
-              Log a cup ☕
-            </button>
-            <button
               className={`btn${activeForm === "coffee" ? " primary" : ""}`}
               onClick={() => setActiveForm("coffee")}
             >
               Log a coffee 🫘
+            </button>
+            <button
+              className={`btn${activeForm === "brew" ? " primary" : ""}`}
+              onClick={() => setActiveForm("brew")}
+            >
+              Log a cup ☕
             </button>
           </div>
           {activeForm === "brew" ? (
