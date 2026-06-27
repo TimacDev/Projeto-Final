@@ -295,7 +295,9 @@
 .source-row .src-meter span { flex: 1; height: 100%; border: 1.5px solid #1a1208; border-radius: 2px; background: #faf8f3; }
 .source-row .src-meter span.on { background: #1a1208; }
 .source-row .src-note { font-size: 13px; color: #2c1a0e; line-height: 1.4; }
-.source-row.best { background: #fdf2dc; border-color: #e8a05a; }
+.source-row.highlight { background: #f9ddb9; border-color: #e8a05a; }
+.source-legend { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #7a6245; margin-bottom: 12px; }
+.source-legend-swatch { width: 16px; height: 16px; border-radius: 4px; background: #f9ddb9; border: 1.5px solid #e8a05a; flex-shrink: 0; }
 
 /* ── Hardware ── */
 .hw-callout { border: 2.5px solid #e8a05a; border-radius: 12px; background: #fdf2dc; padding: 22px 26px; margin-bottom: 28px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
