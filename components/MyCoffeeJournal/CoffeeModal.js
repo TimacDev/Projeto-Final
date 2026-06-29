@@ -54,7 +54,7 @@ export default function CoffeeModal({ coffee, onClose, onRated, onError }) {
       setRatingCount(data.rating_count);
       onRated(coffee.id, data.rating_avg);
     } catch {
-      onError(["Connection problem. Couldn't save your rating. Please try again."]);
+      onError(["Couldn't save your rating. Please try again."]);
     }
   }
 
@@ -76,7 +76,7 @@ export default function CoffeeModal({ coffee, onClose, onRated, onError }) {
       setComments((prev) => [created, ...prev]);
       setComment("");
     } catch {
-      onError(["Connection problem. Couldn't post your comment. Please try again."]);
+      onError(["Couldn't post your comment. Please try again."]);
     }
   }
 
@@ -91,7 +91,7 @@ export default function CoffeeModal({ coffee, onClose, onRated, onError }) {
       }
       setComments((prev) => prev.filter((c) => c.id !== commentId));
     } catch {
-      onError(["Connection problem. Couldn't delete your comment. Please try again."]);
+      onError(["Couldn't delete your comment. Please try again."]);
     }
   }
 

@@ -71,7 +71,7 @@ export default function MyCoffeeJournal() {
       ]);
       return true;
     } catch {
-      setErrors(["Connection problem. Couldn't log a brew log. Please try again."]);
+      setErrors(["Couldn't log a add brew log. Please try again."]);
     }
   }
 
@@ -106,7 +106,7 @@ export default function MyCoffeeJournal() {
       );
       return true;
     } catch {
-      setErrors(["Connection problem. Couldn't update the brew log. Please try again."]);
+      setErrors(["Couldn't update the brew log. Please try again."]);
     }
   }
 
@@ -124,7 +124,7 @@ export default function MyCoffeeJournal() {
 
       setEntries((prev) => prev.filter((e) => e.id !== entry.id));
     } catch {
-      setErrors(["Connection problem. Couldn't delete the brew log. Please try again."]);
+      setErrors(["Couldn't delete the brew log. Please try again."]);
     }
   }
 
@@ -146,7 +146,7 @@ export default function MyCoffeeJournal() {
       setCoffees((prev) => [...prev, data]);
       return true;
     } catch {
-      setErrors(["Connection problem. Couldn't log a coffee. Please try again."]);
+      setErrors(["Couldn't log a coffee. Please try again."]);
     }
   }
 
