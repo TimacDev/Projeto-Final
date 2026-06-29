@@ -7,7 +7,7 @@ export default function ChatBot({ visible = true }) {
   const [messages, setMessages] = useState([
     {
       role: "bot",
-      text: "Hi! Ask me about origins, brew methods, water, or grinders.",
+      text: "Hi! Mr. Beanie here to help you on your coffee journey! Ask me anything from bean to cup!",
     },
   ]);
   const [input, setInput] = useState("");
