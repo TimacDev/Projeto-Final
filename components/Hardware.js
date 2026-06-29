@@ -2,14 +2,14 @@ const HW_PRIORITY = [
   { name:'Grinder',  pct:50, desc:'Particle size and consistency control everything downstream.' },
   { name:'Water',    pct:25, desc:'The solvent. Wrong chemistry, no amount of fancy gear helps.' },
   { name:'Beans',    pct:15, desc:'Fresh and well-roasted matters — but only after the above.' },
-  { name:'Brewer',   pct:10, desc:'A Hario V60 is $25. The brewer is the smallest variable.' },
+  { name:'Brewer',   pct:10, desc:'A Hario V60 is €25. The brewer is the smallest variable.' },
 ];
 
 const HW_KIT = [
-  { icon:'⚖️', name:'Gram scale (0.1g)', why:'Brewing is a ratio. Volume scoops lie. Get one that reads in tenths of a gram.', price:'$20–40' },
-  { icon:'🫖', name:'Gooseneck kettle',   why:'Slow, controlled pour. Variable temp is a nice-to-have, not essential.', price:'$40–120' },
+  { icon:'⚖️', name:'Gram scale (0.1g)', why:'Brewing is a ratio. Volume scoops lie. Get one that reads in tenths of a gram.', price:'€20–40' },
+  { icon:'🫖', name:'Gooseneck kettle',   why:'Slow, controlled pour. Variable temp is a nice-to-have, not essential.', price:'€40–120' },
   { icon:'⏱️', name:'Timer',              why:'Most scales have one built in. Brew time = extraction control.', price:'free' },
-  { icon:'🌡️', name:'Thermometer',        why:'Or just boil and rest 30 seconds — that lands you at ~93°C.', price:'$10' },
+  { icon:'🌡️', name:'Thermometer',        why:'Or just boil and rest 30 seconds — that lands you at ~93°C.', price:'€10' },
 ];
 
 export default function Hardware() {
@@ -21,7 +21,7 @@ export default function Hardware() {
       <div className="hw-callout">
         <div>
           <h2>Buy the grinder.</h2>
-          <p>If you can only afford to upgrade one thing in your setup, make it the grinder. A $30 burr grinder paired with a $25 V60 will outperform a $1,000 espresso machine fed by a blade grinder. Particle consistency is the foundation everything else stands on.</p>
+          <p>If you can only afford to upgrade one thing in your setup, make it the grinder. A €30 burr grinder paired with a €25 V60 will outperform a €1,000 espresso machine fed by a blade grinder. Particle consistency is the foundation everything else stands on.</p>
         </div>
         <div className="badge">Rule #1</div>
       </div>
@@ -58,12 +58,12 @@ export default function Hardware() {
         <div className="hw-vs-divider">vs</div>
         <div className="hw-vs-col win">
           <h4>Burr grinder</h4>
-          <div className="verdict">The only answer</div>
+          <div className="verdict">The better answer</div>
           <ul>
-            <li>Two abrasive surfaces crush beans to a set gap</li>
+            <li>Two abrasive surfaces cut beans to a set gap</li>
             <li>Uniform particles → uniform extraction</li>
-            <li>One clean flavor profile instead of three muddled ones</li>
-            <li>Entry-level hand grinders start around $40</li>
+            <li>One clean flavor profile instead of multiple muddled ones</li>
+            <li>Entry-level hand grinders start around €40</li>
           </ul>
         </div>
       </div>
@@ -75,13 +75,13 @@ export default function Hardware() {
           <h4>Conical burrs</h4>
           <div className="sub">Cone inside a ring</div>
           <p>Bimodal particle distribution — produces both fines and larger grounds. The fines add body and mouthfeel. Quieter, slower, cheaper. Most hand grinders use these.</p>
-          <div className="best-for">Best for: espresso, French press, body-forward cups</div>
+          <div className="best-for">Best for: Espresso, Moka pot, body-forward cups</div>
         </div>
         <div className="hw-grinder-card">
           <h4>Flat burrs</h4>
           <div className="sub">Two parallel discs</div>
           <p>More uniform particle size, fewer fines. Cleaner, more transparent cup that highlights origin character — at the cost of body. Faster, louder, more expensive.</p>
-          <div className="best-for">Best for: pour-over, light roasts, clarity-forward cups</div>
+          <div className="best-for">Best for: Pour-over, light roasts, clarity-forward cups</div>
         </div>
       </div>
 
