@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default function ErrorMessage({ messages, onDismiss }) {
   useEffect(() => {
     if (messages.length === 0) return;
-    const t = setTimeout(onDismiss, 4000);
+    const t = setTimeout(onDismiss, 10000);
     return () => clearTimeout(t);
   }, [messages]);
 
