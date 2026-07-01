@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function ChatBot({ visible = true }) {
   const [open, setOpen] = useState(false);
@@ -122,7 +123,7 @@ export default function ChatBot({ visible = true }) {
       <div className="chatbot-messages" ref={scrollRef}>
         {messages.map((m, i) => (
           <div key={i} className={`chatbot-msg chatbot-msg-${m.role}`}>
-            {m.text}
+            {m.role === "bot" ? <ReactMarkdown>{m.text}</ReactMarkdown> : m.text}
           </div>
         ))}
         {sending && (

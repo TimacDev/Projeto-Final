@@ -138,6 +138,24 @@
   border-bottom-left-radius: 4px;
 }
 
+/* Markdown-rendered bot messages: strip default block margins so content
+   hugs the bubble, and give lists real bullets with tidy indentation. */
+.chatbot-msg-bot p { margin: 0; }
+.chatbot-msg-bot p + p,
+.chatbot-msg-bot p + ul,
+.chatbot-msg-bot p + ol,
+.chatbot-msg-bot ul + p,
+.chatbot-msg-bot ol + p { margin-top: 8px; }
+.chatbot-msg-bot ul,
+.chatbot-msg-bot ol { margin: 0; padding-left: 20px; }
+.chatbot-msg-bot li { margin: 2px 0; }
+.chatbot-msg-bot li::marker { color: #9c845f; }
+.chatbot-msg-bot a { color: #6f4e2e; }
+.chatbot-msg-bot code {
+  background: #e0d6c2; padding: 1px 4px;
+  border-radius: 4px; font-size: 13px;
+}
+
 .chatbot-msg-typing {
   display: flex; gap: 4px; padding: 12px 14px;
 }
