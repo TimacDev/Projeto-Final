@@ -2,6 +2,7 @@
 import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod';
 import db from '../../../lib/db';
+import { getCoffeeCatalog } from '../../../lib/coffees';
 import { coffeeLogSchema } from './schemas/coffeeLog';
 import { buildBrewLogSchema } from './schemas/brewLog';
 
@@ -34,6 +35,9 @@ FORMAT (IMPORTANT — this takes priority over any urge to be thorough)
 Default to SHORT, chat-friendly replies: at most 3-4 short sentences, OR at most 4 brief bullet points. If the answer includes steps, default to bullet points instead of sentences. Do not write essays or multi-section answers by default.
 Give a longer, detailed answer ONLY when the user explicitly asks for it — e.g. "give me a full recipe", "explain in detail", "compare X and Y in depth". A question merely being technical is NOT a request for depth: answer it briefly first, then offer to expand (e.g. "want the full recipe?").
 
+CATALOG
+When the user asks about coffees available in the app, wants a recommendation from the catalog, or asks about a specific coffee's details, call get_coffees and answer from its results. Never invent catalog entries, ratings, or roasters — if a coffee isn't in the results, say it's not in the catalog. Even with many results, keep to the FORMAT rule: summarize a few, don't dump the whole list.
+
 LOGGING
 When the user wants to log/save a coffee or a brew to their journal, use the provided tools (log_coffee, log_brew). Only those tools can write to the journal — if no logging tool is available, tell the user they need to log in to save to their journal. Never claim you logged something unless a tool was actually used.
 
@@ -58,6 +62,11 @@ async function buildTools(user) {
       name: 'log_coffee',
       description: "Save a new coffee to the user's coffee collection. Use when the user wants to log or add a coffee.",
       parametersJsonSchema: toGeminiSchema(coffeeLogSchema),
+    },
+    {
+      name: 'get_coffees',
+      description: "Look up the app's coffee catalog (all coffees added by users), including roaster, country, roast level, notes, and average rating. Use whenever the user asks what coffees exist, wants a recommendation from the catalog, or asks about a specific coffee's details.",
+      parametersJsonSchema: { type: 'object', properties: {} },
     },
   ];
 
@@ -122,20 +131,28 @@ async function logBrew(user, args) {
 
 export async function BeanieBot(userMessage, user) {
   const tools = await buildTools(user);
+  const config = {
+    systemInstruction: behaviorInstruction,
+    maxOutputTokens: MAX_OUTPUT_TOKENS,
+    ...(tools.length ? { tools: [{ functionDeclarations: tools }] } : {}),
+  };
+  const contents = [{ role: 'user', parts: [{ text: userMessage }] }];
 
-  const response = await ai.models.generateContent({
-    model: MODEL,
-    contents: userMessage,
-    config: {
-      systemInstruction: behaviorInstruction,
-      maxOutputTokens: MAX_OUTPUT_TOKENS,
-      ...(tools.length ? { tools: [{ functionDeclarations: tools }] } : {}),
-    },
-  });
-
+  const response = await ai.models.generateContent({ model: MODEL, contents, config });
   const call = response.functionCalls?.[0];
+
+  // Write tools stay terminal (return a confirmation string).
   if (call?.name === 'log_coffee') return logCoffee(user, call.args ?? {});
   if (call?.name === 'log_brew') return logBrew(user, call.args ?? {});
+
+  // Read tool: run it, feed the result back, and let the model answer in prose.
+  if (call?.name === 'get_coffees') {
+    const coffees = await getCoffeeCatalog();
+    contents.push({ role: 'model', parts: [{ functionCall: call }] });
+    contents.push({ role: 'user', parts: [{ functionResponse: { name: 'get_coffees', response: { coffees } } }] });
+    const followup = await ai.models.generateContent({ model: MODEL, contents, config });
+    return followup.text ?? "Sorry, I didn't catch that — could you rephrase?";
+  }
 
   return response.text ?? "Sorry, I didn't catch that — could you rephrase?";
 }
