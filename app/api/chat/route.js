@@ -2,7 +2,7 @@ import { BeanieBot } from '../bot/beanie';
 import { getCurrentUser } from '../../../lib/auth';
 
 export async function POST(request) {
-  const { message } = await request.json();
+  const { message, history } = await request.json();
 
   if (!message || typeof message !== 'string') {
     return Response.json({ error: 'Message is required' }, { status: 400 });
@@ -10,7 +10,7 @@ export async function POST(request) {
 
   try {
     const user = await getCurrentUser();
-    const reply = await BeanieBot(message, user);
+    const reply = await BeanieBot(message, user, Array.isArray(history) ? history : []);
     return Response.json({ reply });
   } catch (err) {
     console.error('chat error:', err);

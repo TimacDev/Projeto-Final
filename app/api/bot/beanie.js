@@ -11,6 +11,9 @@ const MODEL = 'gemini-3.1-flash-lite-preview';
 // Hard ceiling so a reply can't run away even if the model under-weights the FORMAT rule.
 // Sized to fit a full brew recipe (the opt-in "depth" case) without clipping it.
 const MAX_OUTPUT_TOKENS = 800;
+// Sliding context window: how many prior chat turns we feed back to the model.
+// Last ~5 exchanges — enough for natural follow-ups while keeping token cost/latency bounded.
+const HISTORY_LIMIT = 10;
 
 const behaviorInstruction = `
 You are BeanieBot, a specialty coffee expert embedded in a coffee education app inspired by James Hoffmann's "The World Atlas of Coffee."
@@ -129,14 +132,27 @@ async function logBrew(user, args) {
   return `✅ Logged a ${b.method} brew of "${b.coffee_name}".`;
 }
 
-export async function BeanieBot(userMessage, user) {
+// Map the frontend's chat history into Gemini `contents` and append the new message.
+// Frontend roles are 'user'/'bot'; Gemini wants 'user'/'model'. We keep only the last
+// HISTORY_LIMIT turns, and drop any leading non-user turns (the seeded greeting) because
+// Gemini requires the conversation to start with a user turn.
+function toContents(history, userMessage) {
+  const mapped = history
+    .filter((m) => m && typeof m.text === 'string')
+    .map((m) => ({ role: m.role === 'user' ? 'user' : 'model', parts: [{ text: m.text }] }));
+  const windowed = mapped.slice(-HISTORY_LIMIT);
+  while (windowed.length && windowed[0].role !== 'user') windowed.shift();
+  return [...windowed, { role: 'user', parts: [{ text: userMessage }] }];
+}
+
+export async function BeanieBot(userMessage, user, history = []) {
   const tools = await buildTools(user);
   const config = {
     systemInstruction: behaviorInstruction,
     maxOutputTokens: MAX_OUTPUT_TOKENS,
     ...(tools.length ? { tools: [{ functionDeclarations: tools }] } : {}),
   };
-  const contents = [{ role: 'user', parts: [{ text: userMessage }] }];
+  const contents = toContents(history, userMessage);
 
   const response = await ai.models.generateContent({ model: MODEL, contents, config });
   const call = response.functionCalls?.[0];

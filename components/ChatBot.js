@@ -50,7 +50,7 @@ export default function ChatBot({ visible = true }) {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: text, history: messages }),
       });
       const { reply } = await res.json();
       setMessages((prev) => [...prev, { role: "bot", text: reply }]);
