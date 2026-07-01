@@ -164,7 +164,9 @@ export async function BeanieBot(userMessage, user, history = []) {
   // Read tool: run it, feed the result back, and let the model answer in prose.
   if (call?.name === 'get_coffees') {
     const coffees = await getCoffeeCatalog();
-    contents.push({ role: 'model', parts: [{ functionCall: call }] });
+    // Echo back the model's actual turn (not a hand-built part) so its thoughtSignature
+    // is preserved — gemini-3.1 rejects the follow-up call if the signature is missing.
+    contents.push(response.candidates[0].content);
     contents.push({ role: 'user', parts: [{ functionResponse: { name: 'get_coffees', response: { coffees } } }] });
     const followup = await ai.models.generateContent({ model: MODEL, contents, config });
     return followup.text ?? "Sorry, I didn't catch that — could you rephrase?";
