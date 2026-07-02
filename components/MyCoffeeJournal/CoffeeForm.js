@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 
 const PROCESS_OPTIONS = ["washed", "natural", "honey", "wet-hulled", "anaerobic"];
 const ROAST_LEVELS = ["light", "medium-light", "medium", "medium-dark", "dark"];
@@ -16,8 +16,8 @@ const EMPTY_FORM = {
   roaster_notes: "",
 };
 
-export default function CoffeeForm({ onSubmit }) {
-  const [form, setForm] = useState(EMPTY_FORM);
+export default forwardRef(function CoffeeForm({ onSubmit, initialValues }, ref) {
+  const [form, setForm] = useState({ ...EMPTY_FORM, ...initialValues });
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -26,7 +26,7 @@ export default function CoffeeForm({ onSubmit }) {
   }
 
   return (
-    <form className="sk-box log-form" onSubmit={handleSubmit}>
+    <form ref={ref} className="sk-box log-form" onSubmit={handleSubmit}>
 
       <div>
         <div className="log-field-label">Coffee name</div>
@@ -152,4 +152,4 @@ export default function CoffeeForm({ onSubmit }) {
       </button>
     </form>
   );
-}
+});

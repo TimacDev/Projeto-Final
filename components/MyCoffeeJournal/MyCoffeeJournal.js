@@ -1,17 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import BrewLogForm from "./BrewLogForm";
 import CoffeeForm from "./CoffeeForm";
 import BrewCollection from "./BrewCollection";
 import CoffeeCollection from "./CoffeeCollection";
 import ErrorMessage from "../ErrorMessage";
 
-export default function MyCoffeeJournal() {
+export default function MyCoffeeJournal({ coffeePrefill, brewPrefill, submitSignal } = {}) {
   const [entries, setEntries] = useState([]);
   const [coffees, setCoffees] = useState([]);
   const [methods, setMethods] = useState([]);
   const [noteOptions, setNoteOptions] = useState([]);
   const [activeForm, setActiveForm] = useState("brew");
   const [errors, setErrors] = useState([]);
+
+  // A coffee or brew handed back by the chat bot switches us to the matching
+  // form so the user lands on it already filled in.
+  useEffect(() => {
+    if (coffeePrefill) setActiveForm("coffee");
+  }, [coffeePrefill]);
+
+  useEffect(() => {
+    if (brewPrefill) setActiveForm("brew");
+  }, [brewPrefill]);
+
+  // Lets the chat bot "press" the submit button on whichever form is currently
+  // open, using whatever the user has actually typed in — not the bot's own
+  // data. `requestSubmit()` runs native HTML validation first (required
+  // fields, min/max, etc.), so an incomplete form just shows the browser's
+  // validation UI instead of submitting. `submitSignal` is a bump counter (see
+  // page.js) rather than a boolean so repeated requests re-trigger the effect.
+  const coffeeFormRef = useRef(null);
+  const brewFormRef = useRef(null);
+
+  useEffect(() => {
+    if (!submitSignal) return;
+    const formRef = activeForm === "coffee" ? coffeeFormRef : brewFormRef;
+    formRef.current?.requestSubmit();
+  }, [submitSignal]);
 
   useEffect(() => {
     fetch("/api/coffees")
@@ -156,6 +181,11 @@ export default function MyCoffeeJournal() {
     );
   }
 
+  // The bot only knows the coffee by name; the form's select works off coffee_id.
+  const brewFormPrefill = brewPrefill
+    ? { ...brewPrefill, coffee_id: coffees.find((c) => c.name === brewPrefill.coffee_name)?.id ?? "" }
+    : null;
+
   return (
     <>
     <div>
@@ -181,13 +211,21 @@ export default function MyCoffeeJournal() {
           </div>
           {activeForm === "brew" ? (
             <BrewLogForm
+              ref={brewFormRef}
+              key={brewPrefill ? `${JSON.stringify(brewPrefill)}-${coffees.length}` : "empty"}
               coffees={coffees}
               methods={methods}
               noteOptions={noteOptions}
               onSubmit={addEntry}
+              prefill={brewFormPrefill}
             />
           ) : (
-            <CoffeeForm onSubmit={addCoffee} />
+            <CoffeeForm
+              ref={coffeeFormRef}
+              key={coffeePrefill ? JSON.stringify(coffeePrefill) : "empty"}
+              onSubmit={addCoffee}
+              initialValues={coffeePrefill}
+            />
           )}
         </div>
         <div>

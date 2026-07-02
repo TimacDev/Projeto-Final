@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 
-export default function ChatBot({ visible = true }) {
+export default function ChatBot({ visible = true, onPrefill, onSubmitForm }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -53,8 +53,10 @@ export default function ChatBot({ visible = true }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, history: messages }),
       });
-      const { reply } = await res.json();
+      const { reply, prefill, action } = await res.json();
       setMessages((prev) => [...prev, { role: "bot", text: reply }]);
+      if (prefill) onPrefill?.(prefill);
+      if (action === "submit") onSubmitForm?.();
     } catch {
       setMessages((prev) => [
         ...prev,

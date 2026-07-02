@@ -10,8 +10,8 @@ export async function POST(request) {
 
   try {
     const user = await getCurrentUser();
-    const reply = await BeanieBot(message, user, Array.isArray(history) ? history : []);
-    return Response.json({ reply });
+    const { text, prefill, action } = await BeanieBot(message, user, Array.isArray(history) ? history : []);
+    return Response.json({ reply: text, prefill, action });
   } catch (err) {
     console.error('chat error:', err);
     // Frontend reads { reply } regardless of status, so return a friendly reply rather than { error }.

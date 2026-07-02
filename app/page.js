@@ -29,6 +29,12 @@ export default function App() {
   const [tab, setTab] = useState('history');
   const [user, setUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
+  const [coffeePrefill, setCoffeePrefill] = useState(null);
+  const [brewPrefill, setBrewPrefill] = useState(null);
+  // Bumped (not toggled) each time the bot is asked to submit the open form,
+  // so repeated "submit it" requests re-trigger the journal's submit effect
+  // even if nothing else about the app state changed.
+  const [submitSignal, setSubmitSignal] = useState(0);
 
   // On load, ask the server who we are (via the session cookie) so a refresh
   // keeps you logged in. authChecked avoids flashing the login form first.
@@ -39,6 +45,21 @@ export default function App() {
       .catch(() => setUser(null))
       .finally(() => setAuthChecked(true));
   }, []);
+
+  // The chat bot can't save a coffee or brew itself — it only hands back the
+  // parsed fields, which we drop into the matching journal form for review.
+  function handlePrefill(prefill) {
+    if (prefill.type === 'coffee') setCoffeePrefill(prefill.data);
+    else if (prefill.type === 'brew') setBrewPrefill(prefill.data);
+    setTab('journal');
+  }
+
+  // Only meaningful if the journal (with an open form) is actually mounted —
+  // unlike handlePrefill, this doesn't switch tabs, since "submit the form
+  // I have open" implies it's already visible.
+  function handleSubmitForm() {
+    setSubmitSignal((n) => n + 1);
+  }
 
   async function logout() {
     await fetch('/api/auth/logout', { method: 'POST' });
@@ -59,7 +80,7 @@ export default function App() {
       case 'quiz':       return <TasteQuiz/>;
       // The journal is the only gated tab: show it when logged in, otherwise the
       // login/signup form. `null` while we're still checking avoids a flash.
-      case 'journal':    return !authChecked ? null : user ? <MyCoffeeJournal/> : <Auth onAuthed={setUser}/>;
+      case 'journal':    return !authChecked ? null : user ? <MyCoffeeJournal coffeePrefill={coffeePrefill} brewPrefill={brewPrefill} submitSignal={submitSignal}/> : <Auth onAuthed={setUser}/>;
       default:           return null;
     }
   }
@@ -112,7 +133,7 @@ export default function App() {
         </div>
       </div>
     </div> 
-    <ChatBot visible={landingUp} />
+    <ChatBot visible={landingUp} onPrefill={handlePrefill} onSubmitForm={handleSubmitForm} />
     </>
   );
 }

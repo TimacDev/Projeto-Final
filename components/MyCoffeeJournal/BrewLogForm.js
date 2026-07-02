@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 
 const EMPTY_FORM = {
   coffee_id: "",
@@ -29,7 +29,7 @@ function entryToForm(entry) {
   return form;
 }
 
-export default function BrewLogForm({
+export default forwardRef(function BrewLogForm({
   coffees,
   methods,
   noteOptions,
@@ -37,12 +37,15 @@ export default function BrewLogForm({
   editEntry,
   onCancelEdit,
   variant,
-}) {
-  const [form, setForm] = useState(EMPTY_FORM);
+  prefill,
+}, ref) {
+  const [form, setForm] = useState(() =>
+    editEntry ? entryToForm(editEntry) : prefill ? entryToForm(prefill) : EMPTY_FORM
+  );
 
   useEffect(() => {
-    setForm(editEntry ? entryToForm(editEntry) : EMPTY_FORM);
-  }, [editEntry]);
+    setForm(editEntry ? entryToForm(editEntry) : prefill ? entryToForm(prefill) : EMPTY_FORM);
+  }, [editEntry, prefill]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -53,6 +56,7 @@ export default function BrewLogForm({
 
   return (
     <form
+      ref={ref}
       className={`log-form ${variant === "modal" ? "log-form-modal" : "sk-box"}`}
       onSubmit={handleSubmit}
     >
@@ -104,6 +108,7 @@ export default function BrewLogForm({
         <input
           className="log-input"
           type="number"
+          min="0"
           placeholder="e.g. 18"
           value={form.dose_g}
           onChange={(e) => setForm((f) => ({ ...f, dose_g: e.target.value }))}
@@ -115,6 +120,7 @@ export default function BrewLogForm({
         <input
           className="log-input"
           type="number"
+          min="0"
           placeholder="e.g. 300"
           value={form.water_g}
           onChange={(e) => setForm((f) => ({ ...f, water_g: e.target.value }))}
@@ -136,6 +142,7 @@ export default function BrewLogForm({
         <input
           className="log-input"
           type="number"
+          min="0"
           placeholder="e.g. 93"
           value={form.water_temp_c}
           onChange={(e) => setForm((f) => ({ ...f, water_temp_c: e.target.value }))}
@@ -147,6 +154,7 @@ export default function BrewLogForm({
         <input
           className="log-input"
           type="number"
+          min="0"
           placeholder="e.g. 210"
           value={form.brew_time_sec}
           onChange={(e) => setForm((f) => ({ ...f, brew_time_sec: e.target.value }))}
@@ -204,4 +212,4 @@ export default function BrewLogForm({
       </div>
     </form>
   );
-}
+});
