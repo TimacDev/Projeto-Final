@@ -84,3 +84,8 @@
 .log-collection { display: flex; flex-direction: column; gap: 10px; }
 .log-collection-title { font-family: var(--font-display); font-style: italic; font-size: 22px; margin-bottom: 14px; letter-spacing: -0.01em; }
 .log-collection-count { font-size: 15px; color: #9c845f; }
+.log-collection-filters { display: flex; gap: 10px; margin-bottom: 16px; }
+.log-pagination { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 14px; }
+.log-pagination .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.log-pagination-status { font-size: 13px; color: #9c845f; }
+.modal .btn.danger { margin-top: 10px; }

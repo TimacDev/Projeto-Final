@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-export default function CoffeeModal({ coffee, onClose, onRated, onError }) {
+export default function CoffeeModal({ coffee, onClose, onRated, onError, onDelete, isOwner }) {
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
@@ -95,6 +95,18 @@ export default function CoffeeModal({ coffee, onClose, onRated, onError }) {
     }
   }
 
+  function handleDelete() {
+    if (
+      !window.confirm(
+        "Delete this coffee? This also removes its ratings, comments, and any brew logs — including other people's — that reference it. This can't be undone.",
+      )
+    ) {
+      return;
+    }
+    onDelete(coffee);
+    onClose();
+  }
+
   const notes = details?.roaster_notes
     ? details.roaster_notes.split(",").map((t) => t.trim()).filter(Boolean)
     : [];
@@ -112,6 +124,12 @@ export default function CoffeeModal({ coffee, onClose, onRated, onError }) {
           ×
         </button>
         <div className="log-entry-title">{coffee.name}</div>
+
+        {isOwner && (
+          <button className="btn danger" type="button" onClick={handleDelete}>
+            Delete coffee
+          </button>
+        )}
 
         {loading ? (
           <div className="log-entry-meta">Loading…</div>

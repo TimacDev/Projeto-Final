@@ -5,7 +5,7 @@ import BrewCollection from "./BrewCollection";
 import CoffeeCollection from "./CoffeeCollection";
 import ErrorMessage from "../ErrorMessage";
 
-export default function MyCoffeeJournal({ coffeePrefill, brewPrefill, submitSignal } = {}) {
+export default function MyCoffeeJournal({ coffeePrefill, brewPrefill, submitSignal, user } = {}) {
   const [entries, setEntries] = useState([]);
   const [coffees, setCoffees] = useState([]);
   const [methods, setMethods] = useState([]);
@@ -181,6 +181,24 @@ export default function MyCoffeeJournal({ coffeePrefill, brewPrefill, submitSign
     );
   }
 
+  async function deleteCoffee(coffee) {
+    try {
+      const res = await fetch(`/api/coffees/${coffee.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setErrors(data.errors ?? ["Couldn't delete this coffee. Please try again."]);
+        return;
+      }
+
+      setCoffees((prev) => prev.filter((c) => c.id !== coffee.id));
+    } catch {
+      setErrors(["Couldn't delete this coffee. Please try again."]);
+    }
+  }
+
   // The bot only knows the coffee by name; the form's select works off coffee_id.
   const brewFormPrefill = brewPrefill
     ? { ...brewPrefill, coffee_id: coffees.find((c) => c.name === brewPrefill.coffee_name)?.id ?? "" }
@@ -243,6 +261,8 @@ export default function MyCoffeeJournal({ coffeePrefill, brewPrefill, submitSign
               coffees={coffees}
               onRated={updateCoffeeRating}
               onError={setErrors}
+              onDelete={deleteCoffee}
+              currentUserId={user?.id}
             />
           )}
         </div>

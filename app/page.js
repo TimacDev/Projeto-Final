@@ -80,7 +80,7 @@ export default function App() {
       case 'quiz':       return <TasteQuiz/>;
       // The journal is the only gated tab: show it when logged in, otherwise the
       // login/signup form. `null` while we're still checking avoids a flash.
-      case 'journal':    return !authChecked ? null : user ? <MyCoffeeJournal coffeePrefill={coffeePrefill} brewPrefill={brewPrefill} submitSignal={submitSignal}/> : <Auth onAuthed={setUser}/>;
+      case 'journal':    return !authChecked ? null : user ? <MyCoffeeJournal coffeePrefill={coffeePrefill} brewPrefill={brewPrefill} submitSignal={submitSignal} user={user}/> : <Auth onAuthed={setUser}/>;
       default:           return null;
     }
   }
